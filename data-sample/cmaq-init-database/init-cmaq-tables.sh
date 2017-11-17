@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
+# Usage: ./init-cmaq-db.sh [--postgres]
+#   --postgres: only use when you are invoking as the system's postgres user
+
 CONFIG_DIR=$(dirname $(dirname $(pwd)))/config
 source ${CONFIG_DIR}/database.cfg
+
+if [ "$1" = "--postgres" ]; then
+    USER_POSTGRES=true
+else
+    USER_POSTGRES=false
+fi
 
 EXPOSURE_DATA="CREATE TABLE IF NOT EXISTS exposure_data (
   id                SERIAL UNIQUE PRIMARY KEY,
@@ -23,15 +32,33 @@ EXPOSURE_LIST="CREATE TABLE IF NOT EXISTS exposure_list (
 );"
 
 # create table exposure_data
-docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "${EXPOSURE_DATA}"
-docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "ALTER TABLE exposure_data OWNER TO ${POSTGRES_USERNAME};"
+if $USER_POSTGRES; then
+    psql ${POSTGRES_DATABASE} -c "${EXPOSURE_DATA}"
+    psql ${POSTGRES_DATABASE} -c "ALTER TABLE exposure_data OWNER TO ${POSTGRES_USERNAME};"
+else
+    docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "${EXPOSURE_DATA}"
+    docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c \
+    "ALTER TABLE exposure_data OWNER TO ${POSTGRES_USERNAME};"
+fi
 
 # create table exposure_list
-docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "${EXPOSURE_LIST}"
-docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "ALTER TABLE exposure_list OWNER TO ${POSTGRES_USERNAME};"
+if $USER_POSTGRES; then
+    psql ${POSTGRES_DATABASE} -c "${EXPOSURE_LIST}"
+    psql ${POSTGRES_DATABASE} -c "ALTER TABLE exposure_list OWNER TO ${POSTGRES_USERNAME};"
+else
+    docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "${EXPOSURE_LIST}"
+    docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c \
+    "ALTER TABLE exposure_list OWNER TO ${POSTGRES_USERNAME};"
+fi
 
 # show tables
-docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "SELECT * FROM exposure_data LIMIT 1;"
-docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "SELECT * FROM exposure_list LIMIT 1;"
+if $USER_POSTGRES; then
+    psql ${POSTGRES_DATABASE} -c "SELECT * FROM exposure_data LIMIT 1;"
+    psql ${POSTGRES_DATABASE} -c "SELECT * FROM exposure_list LIMIT 1;"
+else
+    docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c "SELECT * FROM exposure_data LIMIT 1;"
+    docker exec -u postgres ${POSTGRES_HOST} psql ${POSTGRES_DATABASE} -c \
+    "SELECT * FROM exposure_list LIMIT 1;"
+fi
 
 exit 0;
