@@ -90,4 +90,57 @@ The scripts herein are setup to find their configuration files relative to their
 	(0 rows)
 	```
 	
-**Note**: Prior to loading sample data user's should review the [pre-ingest](data-tools/pre-ingest) tools for proper database preparation.
+**Notes**: 
+
+- Prior to loading sample data user's should review the [pre-ingest](../data-tools) tools for proper database preparation.
+- The cmaq-init scripts default to docker use, but also have a `--postgres` flag for using against a regular PostgreSQL installation.
+
+Example:
+
+- Use when logged in as user `postgres` with access to the database.
+
+	```
+	-bash-4.2$ whoami
+	postgres
+	-bash-4.2$ ./init-cmaq-db.sh --postgres
+	CREATE ROLE
+	CREATE DATABASE
+	GRANT
+	CREATE EXTENSION
+	CREATE EXTENSION
+	CREATE EXTENSION
+	                                  List of databases
+	   Name    |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges
+	-----------+----------+----------+-------------+-------------+------------------------
+	 cmaq      | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/postgres          +
+	           |          |          |             |             | postgres=CTc/postgres +
+	           |          |          |             |             | datatrans=CTc/postgres
+	 postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+	 template0 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres           +
+	           |          |          |             |             | postgres=CTc/postgres
+	 template1 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres           +
+	           |          |          |             |             | postgres=CTc/postgres
+	(4 rows)
+	
+	                                         List of installed extensions
+	       Name       | Version |   Schema   |                             Description
+	------------------+---------+------------+---------------------------------------------------------------------
+	 ogr_fdw          | 1.0     | public     | foreign-data wrapper for GIS data access
+	 plpgsql          | 1.0     | pg_catalog | PL/pgSQL procedural language
+	 postgis          | 2.3.4   | public     | PostGIS geometry, geography, and raster spatial types and functions
+	 postgis_topology | 2.3.4   | topology   | PostGIS topology spatial types and functions
+	(4 rows)
+	
+	-bash-4.2$ ./init-cmaq-tables.sh --postgres
+	CREATE TABLE
+	ALTER TABLE
+	CREATE TABLE
+	ALTER TABLE
+	 id | col | row | utc_date_time
+	----+-----+-----+---------------
+	(0 rows)
+	
+	 id | type | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
+	----+------+-------------+-------+-------------+-------------------+-------------------+------------+-------------
+	(0 rows)
+	```
