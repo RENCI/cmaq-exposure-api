@@ -1,13 +1,13 @@
 id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolution,aggregation
-115,a,1-RH[0]/100,"",,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+115,a,1-RH[0]/100,"",,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 36,aalj,AALJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 39,acaj,ACAJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 47,acak,0.0320*ASEACAT[1]+0.0838*ASOIL[1]+0.0562*ACORS[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 48,aclij,ACLI[1]+ACLJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 49,aecij,AECI[1]+AECJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 35,afej,AFEJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-78,ahplusij,(AH3OPI[1]+AH3OPJ[1])*1.0/19.0,ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-103,air_dens,DENS[3],kg/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+78,ahplusij,(AH3OPI[1]+AH3OPJ[1])*1.0/19.0,ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+103,air_dens,DENS[3],kg/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 41,akj,AKJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 46,akk,0.0310*ASEACAT[1]+0.0242*ASOIL[1]+0.0176*ACORS[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 1,ald2,1000.0*ALD2[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
@@ -19,16 +19,16 @@ id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolu
 44,anak,0.8373*ASEACAT[1]+0.0626*ASOIL[1]+0.0023*ACORS[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 70,ancomij,AOMIJ[0]-AOCIJ[0],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 53,anh4ij,ANH4I[1]+ANH4J[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-122,anh4ij_loss,ANO3IJ_loss[0]*(18/62),ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+122,anh4ij_loss,ANO3IJ_loss[0]*(18/62),ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 54,anh4k,ANH4K[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 51,ano3ij,ANO3I[1]+ANO3J[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-120,ano3ij_loss,max_NO3_loss[0]<=ANO3IJ[0] ? max_NO3_loss[0] : ANO3IJ[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+120,ano3ij_loss,max_NO3_loss[0]<=ANO3IJ[0] ? max_NO3_loss[0] : ANO3IJ[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 52,ano3k,ANO3K[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 20,ano3_ppb,(ANO3I[1]+ANO3J[1]+ANO3K[1])/(DENS[2]*(62.0/28.97)),ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 55,aocij,(AXYL1J[1]+AXYL2J[1]+AXYL3J[1])/2.0+(ATOL1J[1]+ATOL2J[1]+ATOL3J[1])/2.0+(ABNZ1J[,ugC/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 56,aomij,AXYL1J[1]+AXYL2J[1]+AXYL3J[1]+ATOL1J[1]+ATOL2J[1]+ATOL3J[1]+ABNZ1J[1]+ABNZ2J[1]+,ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-80,aomocrat_pri,APOAIJ[0]/APOCIJ[0],none,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-81,aomocrat_tot,AOMIJ[0]/AOCIJ[0],none,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+80,aomocrat_pri,APOAIJ[0]/APOCIJ[0],none,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+81,aomocrat_tot,AOMIJ[0]/AOCIJ[0],none,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 57,aorgaj,AXYL1J[1]+AXYL2J[1]+AXYL3J[1]+ATOL1J[1]+ATOL2J[1]+ATOL3J[1]+ABNZ1J[1]+ABNZ2J[1]+,ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 58,aorgbj,AISO1J[1]+AISO2J[1]+AISO3J[1]+ATRP1J[1]+ATRP2J[1]+ASQTJ[1]+AOLGBJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 59,aorgcj,AORGCJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
@@ -44,10 +44,10 @@ id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolu
 66,atotk,ASOIL[1]+ACORS[1]+ASEACAT[1]+ACLK[1]+ASO4K[1]+ANO3K[1]+ANH4K[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 69,aunspec1ij,PMIJ[0] - (ASOILJ[0] + ANO3IJ[0] + ASO4IJ[0] + ANH4IJ[0] + AOCIJ[0] + AECIJ[0] +,ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 71,aunspec2ij,AUNSPEC1IJ[0] - ANCOMIJ[0],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-73,benzene,1000.0*BENZENE[1],ppbV,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-74,clno2,1000.0*CLNO2[1],ppbV,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+73,benzene,1000.0*BENZENE[1],ppbV,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+74,clno2,1000.0*CLNO2[1],ppbV,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 3,co,1000.0*CO[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-102,dcv_recon,DCV_Recon[2],deciview,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+102,dcv_recon,DCV_Recon[2],deciview,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 4,eth,1000.0*ETH[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 5,etha,1000.0*ETHA[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 6,form,1000.0*FORM[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
@@ -58,9 +58,9 @@ id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolu
 11,hox,1000.0*(OH[1]+HO2[1]),ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 12,iole,1000.0*IOLE[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 13,isop,1000.0*ISOP[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-111,k,exp(118.87-24084/TEMP2[5]-6.025*log(TEMP2[5])),ppb^2,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-116,k_prime,(P1[0]-P2[0]*a[0]+(P3[0]*a[0]*a[0]))*(a[0]^1.75)*K[0],ppb^2,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-118,max_no3_loss,745.7/TEMP2[5]*sqrt_Ki[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+111,k,exp(118.87-24084/TEMP2[5]-6.025*log(TEMP2[5])),ppb^2,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+116,k_prime,(P1[0]-P2[0]*a[0]+(P3[0]*a[0]*a[0]))*(a[0]^1.75)*K[0],ppb^2,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+118,max_no3_loss,745.7/TEMP2[5]*sqrt_Ki[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 14,n2o5,1000.0*N2O5[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 15,nh3,1000.0*NH3[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 16,nh3_ugm3,1000.0*(NH3[1]*0.5880*DENS[2]),ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
@@ -70,56 +70,56 @@ id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolu
 21,noy,1000.0*(NO[1]+NO2[1]+NO3[1]+2*N2O5[1]+HONO[1]+HNO3[1]+PAN[1]+PANX[1]+PNA[1]+NTR[,ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 22,ntr,1000.0*NTR[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 23,o3,1000.0*O3[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-75,oh,1000.0*(OH[1]),ppbV,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+75,oh,1000.0*(OH[1]),ppbV,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 24,ole,1000.0*OLE[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-112,p1,exp(8763/TEMP2[5]+19.12*log(TEMP2[5])-135.94),"",,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-113,p2,exp(9969/TEMP2[5]+16.22*log(TEMP2[5])-122.65),"",,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-114,p3,exp(13875/TEMP2[5]+24.46*log(TEMP2[5])-182.61),"",,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+112,p1,exp(8763/TEMP2[5]+19.12*log(TEMP2[5])-135.94),"",,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+113,p2,exp(9969/TEMP2[5]+16.22*log(TEMP2[5])-122.65),"",,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+114,p3,exp(13875/TEMP2[5]+24.46*log(TEMP2[5])-182.61),"",,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 26,pan,1000.0*PAN[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-76,pans,1000.0*(PAN[1]+PANX[1]+OPAN[1]+MAPAN[1]),ppbV,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+76,pans,1000.0*(PAN[1]+PANX[1]+OPAN[1]+MAPAN[1]),ppbV,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 27,panx,1000.0*PANX[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 25,par,1000.0*PAR[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-106,pblh,PBL[5],m,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+106,pblh,PBL[5],m,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 68,pm10,PMIJ[0]+ATOTK[0],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-88,pm25_ca,ACAJ[1]*PM25AC[4]+ACAK[0]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-83,pm25_cl,ACLI[1]*PM25AT[4]+ACLJ[1]*PM25AC[4]+ACLK[1]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-84,pm25_ec,AECI[1]*PM25AT[4]+AECJ[1]*PM25AC[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-124,pm25_frm,PM25_TOT[0]-(PM25_NO3_loss[0]+PM25_NH4_loss[0])+0.24*(PM25_SO4[0]+PM25_NH4[0]-PM,ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-82,pm25_hp,(AH3OPI[1]*PM25AT[4]+AH3OPJ[1]*PM25AC[4]+AH3OPK[1]*PM25CO[4])*1.0/19.0,ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-87,pm25_k,AKJ[1] *PM25AC[4]+AKK[0] *PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-86,pm25_mg,AMGJ[1]*PM25AC[4]+AMGK[0]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-85,pm25_na,ANAI[1]*PM25AT[4]+ANAJ[1]*PM25AC[4]+ANAK[0]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-89,pm25_nh4,ANH4I[1]*PM25AT[4]+ANH4J[1]*PM25AC[4]+ANH4K[1]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-121,pm25_nh4_loss,PM25_NO3_loss[0]*(18/62),ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-90,pm25_no3,ANO3I[1]*PM25AT[4]+ANO3J[1]*PM25AC[4]+ANO3K[1]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-119,pm25_no3_loss,max_NO3_loss[0]<=PM25_NO3[0] ? max_NO3_loss[0] : PM25_NO3[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-91,pm25_oc,APOCI[1]*PM25AT[4]+(AOCIJ[0]-APOCI[1])*PM25AC[4],ugC/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-72,pm25rd,AECIJ[0]+APOCIJ[0]+0.01*ASO4IJ[0],ug/m3,,2010-01-01 00:00:00,2010-01-02 00:00:00,hour;day;7day;14day,max;avg
-93,pm25_so4,ASO4I[1]*PM25AT[4]+ASO4J[1]*PM25AC[4]+ASO4K[1]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-92,pm25_soil,ASOILJ[0]*PM25AC[4]+(ASOIL[1]+ACORS[1])*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-94,pm25_tot,ATOTI[0]*PM25AT[4]+ATOTJ[0]*PM25AC[4]+ATOTK[0]*PM25CO[4],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-95,pm25_unspec1,PM25_TOT[0]-(PM25_CL[0]+PM25_EC[0]+PM25_NA[0]+PM25_NH4[0]+PM25_NO3[0]+PM25_OC[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-96,pmc_cl,ACLI[1]+ACLJ[1]+ACLK[1]-PM25_CL[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-97,pmc_na,ANAIJ[0]+ANAK[0]*0.78-PM25_NA[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-98,pmc_nh4,ANH4I[1]+ANH4J[1]+ANH4K[1]-PM25_NH4[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-99,pmc_no3,ANO3I[1]+ANO3J[1]+ANO3K[1]-PM25_NO3[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-100,pmc_so4,ASO4I[1]+ASO4J[1]+ASO4K[1]-PM25_SO4[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-101,pmc_tot,PM10[0]-PM25_TOT[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+88,pm25_ca,ACAJ[1]*PM25AC[4]+ACAK[0]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+83,pm25_cl,ACLI[1]*PM25AT[4]+ACLJ[1]*PM25AC[4]+ACLK[1]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+84,pm25_ec,AECI[1]*PM25AT[4]+AECJ[1]*PM25AC[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+124,pm25_frm,PM25_TOT[0]-(PM25_NO3_loss[0]+PM25_NH4_loss[0])+0.24*(PM25_SO4[0]+PM25_NH4[0]-PM,ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+82,pm25_hp,(AH3OPI[1]*PM25AT[4]+AH3OPJ[1]*PM25AC[4]+AH3OPK[1]*PM25CO[4])*1.0/19.0,ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+87,pm25_k,AKJ[1] *PM25AC[4]+AKK[0] *PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+86,pm25_mg,AMGJ[1]*PM25AC[4]+AMGK[0]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+85,pm25_na,ANAI[1]*PM25AT[4]+ANAJ[1]*PM25AC[4]+ANAK[0]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+89,pm25_nh4,ANH4I[1]*PM25AT[4]+ANH4J[1]*PM25AC[4]+ANH4K[1]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+121,pm25_nh4_loss,PM25_NO3_loss[0]*(18/62),ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+90,pm25_no3,ANO3I[1]*PM25AT[4]+ANO3J[1]*PM25AC[4]+ANO3K[1]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+119,pm25_no3_loss,max_NO3_loss[0]<=PM25_NO3[0] ? max_NO3_loss[0] : PM25_NO3[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+91,pm25_oc,APOCI[1]*PM25AT[4]+(AOCIJ[0]-APOCI[1])*PM25AC[4],ugC/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+72,pm25rd,AECIJ[0]+APOCIJ[0]+0.01*ASO4IJ[0],ug/m3,,2010-01-01 00:00:00,2011-01-01 00:00:00,hour;day;7day;14day,max;avg
+93,pm25_so4,ASO4I[1]*PM25AT[4]+ASO4J[1]*PM25AC[4]+ASO4K[1]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+92,pm25_soil,ASOILJ[0]*PM25AC[4]+(ASOIL[1]+ACORS[1])*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+94,pm25_tot,ATOTI[0]*PM25AT[4]+ATOTJ[0]*PM25AC[4]+ATOTK[0]*PM25CO[4],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+95,pm25_unspec1,PM25_TOT[0]-(PM25_CL[0]+PM25_EC[0]+PM25_NA[0]+PM25_NH4[0]+PM25_NO3[0]+PM25_OC[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+96,pmc_cl,ACLI[1]+ACLJ[1]+ACLK[1]-PM25_CL[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+97,pmc_na,ANAIJ[0]+ANAK[0]*0.78-PM25_NA[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+98,pmc_nh4,ANH4I[1]+ANH4J[1]+ANH4K[1]-PM25_NH4[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+99,pmc_no3,ANO3I[1]+ANO3J[1]+ANO3K[1]-PM25_NO3[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+100,pmc_so4,ASO4I[1]+ASO4J[1]+ASO4K[1]-PM25_SO4[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+101,pmc_tot,PM10[0]-PM25_TOT[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 67,pmij,ATOTI[0]+ATOTJ[0],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-123,pmij_frm,PMIJ[0]-(ANO3IJ_loss[0]+ANH4IJ_loss[0])+0.24*(ASO4IJ[0]+ANH4IJ[0]-ANH4IJ_loss[0],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-108,precip,RN[5]+RC[5],cm,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-104,rh,100.00*RH[4],%,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-105,sfc_tmp,(TEMP2[5]-273.15),C,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+123,pmij_frm,PMIJ[0]-(ANO3IJ_loss[0]+ANH4IJ_loss[0])+0.24*(ASO4IJ[0]+ANH4IJ[0]-ANH4IJ_loss[0],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+108,precip,RN[5]+RC[5],cm,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+104,rh,100.00*RH[4],%,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+105,sfc_tmp,(TEMP2[5]-273.15),C,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 28,so2,1000.0*SO2[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 29,so2_ugm3,1000.0*(SO2[1]*2.2118*DENS[2]),ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-107,sol_rad,RGRND[5],WATTS/m2,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-117,sqrt_ki,sqrt(RH[0]<=61 ? K[0] : K_prime[0]),ppb,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+107,sol_rad,RGRND[5],WATTS/m2,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+117,sqrt_ki,sqrt(RH[0]<=61 ? K[0] : K_prime[0]),ppb,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 30,sulf,1000.0*SULF[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 31,terp,1000.0*TERP[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-79,tno3,2175.6*(HNO3[1]*DENS[3])+ANO3I[1]+ANO3J[1]+ANO3K[1],ug/m3,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+79,tno3,2175.6*(HNO3[1]*DENS[3])+ANO3I[1]+ANO3J[1]+ANO3K[1],ug/m3,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 32,tol,1000.0*TOL[1],ppbV,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 33,voc,1000.0*(PAR[1]+2.0*ETH[1]+2.0*ETOH[1]+2.0*OLE[1]+7.0*TOL[1]+8.0*XYL[1]+FORM[1]+2,ppbC,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-110,wdir10,WDIR10[5],deg,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-109,wspd10,WSPD10[5],m/s,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
-34,xyl,1000.0*XYL[1],ppbV,,2010-01-01 00:00:00,2010-01-02 00:00:00,hour;day;7day;14day,max;avg
-77,xylmn,1000.0*XYLMN[1],ppbV,,2011-12-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+110,wdir10,WDIR10[5],deg,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+109,wspd10,WSPD10[5],m/s,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+34,xyl,1000.0*XYL[1],ppbV,,2010-01-01 00:00:00,2011-01-01 00:00:00,hour;day;7day;14day,max;avg
+77,xylmn,1000.0*XYLMN[1],ppbV,,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
