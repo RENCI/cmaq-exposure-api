@@ -6,16 +6,18 @@ Tools related to data and database maintenance.
 
 1. line 8: `pre-ingest/update-cmaq-tables.py`
 2. line 8: `pre-ingest/update-cmaq-tables-dryrun.py`
+3. line 7: `pre-ingest/update-common-name.py`
 
 ## pre-ingest
 
 Sanity checks to run against the database prior to ingesting new CMAQ data.
+Updates to the common name for the CMAQ exposure types.
 
-### variable validation
+### Table Column Validation
 
 Prior to running the ingestion scripts the database should be checked for compatibility.
 
-This is done by scanning the CMAQ NetCDF files for the list of variables and checking them against the existing database. If discrepancies are found then generate the appropriate SQL commands to update the impacted tables.
+This is done by scanning the CMAQ NetCDF files for the list of variables and checking them against the existing columns of the database. If discrepancies are found then generate the appropriate SQL commands to update the impacted tables.
 
 1. `update-cmaq-tables.py`: 
 	- Usage: `$ python update-cmaq-tables.py FILENAME`
@@ -101,3 +103,50 @@ $ docker exec -u postgres database psql -d cmaq -c "select * from exposure_list 
 ```
 
 The pre-ingest check should be run on each CMAQ source data file prior to it's ingestion.
+
+### Update common_name
+
+The source CMAQ files abbreviate the exposure names and don't contain a common name for the abbreviation. The python script named `update-common-name.py` checks the contents of the database against a file named `exposure_list.csv` from the repository and updates the database accordingly.
+
+The user should update the `common_name` column directly in the `exposure_list.csv` file. If a particular exposure type has more than one common name, they should be seperated by a semicolon `;`
+
+- Example `exposure_list.csv`:
+
+	```
+	id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolution,aggregation
+	...
+	23,o3,1000.0*O3[1],ppbV,Ozone;O3,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
+	...
+	```
+
+Usage: `$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/data/exposure_list.csv`
+
+- Example:
+
+	```
+	$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/data/exposure_list.csv
+	UPDATE: exposure_list common_name
+	  --UPDATE exposure_list SET common_name = 'Acetaldehyde' WHERE type = 'ald2' ;
+	  --UPDATE exposure_list SET common_name = 'Higher Aldehydes' WHERE type = 'aldx' ;
+	  --UPDATE exposure_list SET common_name = 'Formaldehyde' WHERE type = 'form' ;
+	  --UPDATE exposure_list SET common_name = 'Ozone;O3' WHERE type = 'o3' ;
+	  --UPDATE exposure_list SET common_name = 'Particulate Matter 2.5' WHERE type = 'pmij' ;
+	```
+
+- Results in:
+
+	```
+	$ docker exec -u postgres database psql -d cmaq -c "select * from exposure_list where common_name is not null order by type;"
+	 id | type |    description    | units |      common_name       |  utc_min_date_time  |  utc_max_date_time  |     resolution      | aggregation
+	----+------+-------------------+-------+------------------------+---------------------+---------------------+---------------------+-------------
+	  1 | ald2 | 1000.0*ALD2[1]    | ppbV  | Acetaldehyde           | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
+	  2 | aldx | 1000.0*ALDX[1]    | ppbV  | Higher Aldehydes       | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
+	  7 | form | 1000.0*FORM[1]    | ppbV  | Formaldehyde           | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
+	 27 | o3   | 1000.0*O3[1]      | ppbV  | Ozone;O3               | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
+	 73 | pmij | ATOTI[0]+ATOTJ[0] | ug/m3 | Particulate Matter 2.5 | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
+	(5 rows)
+	```
+
+## ingest
+
+TODO
