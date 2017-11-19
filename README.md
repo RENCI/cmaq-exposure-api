@@ -7,7 +7,16 @@ The CMAQ Exposure API is a RESTful data service implemented in [Swagger](https:/
 Preliminary assumptions
 
 - Python 3 is available on the host
+	- Generally executed using `virtualenv` in the manner:
+
+		```
+		$ virtualenv -p /PATH_TO/python3 venv
+		$ source venv/bin/activate
+		(venv) $ pip install -r requirements.txt
+		(venv) $ python SOMETHING.py [/PATH_TO/SOME_FILE]
+		```
 - Docker and docker-compose are available on the host
+	- Generally executed using a `bash` script that performs `docker` or `docker-compose` calls
 
 **PostgreSQL 9.6 / PostGIS 2.3**:
  

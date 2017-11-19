@@ -6,7 +6,7 @@ PostgreSQL 9.6 + PostGIS 2.3
 
 ### Populate Sample Data
 
-See [data-sample/README.md](../data-sample/README.md) for more information.
+See [data-sample/README.md](../data-sample) for more information.
 
 
 ### Start the Database
@@ -53,7 +53,7 @@ Database is running - use your local IP address for connection
 
 Attempts to stop and remove any database related Docker containers. Will also remove all database related Docker images if the `--all` flag is used.
 
-From the `database/` directory:
+From the `postgres96/` directory:
 
 ```
 Usage: ./stop-database.sh [--all]
