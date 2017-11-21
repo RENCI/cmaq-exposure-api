@@ -85,7 +85,7 @@ The scripts herein are setup to find their configuration files relative to their
 	----+-----+-----+---------------
 	(0 rows)
 	
-	 id | type | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
+	 id | variable | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
 	----+------+-------------+-------+-------------+-------------------+-------------------+------------+-------------
 	(0 rows)
 	```
@@ -140,7 +140,7 @@ Example:
 	----+-----+-----+---------------
 	(0 rows)
 	
-	 id | type | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
+	 id | variable | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
 	----+------+-------------+-------+-------------+-------------------+-------------------+------------+-------------
 	(0 rows)
 	```

@@ -1,4 +1,4 @@
-id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolution,aggregation
+id,variable,description,units,common_name,utc_min_date_time,utc_max_date_time,resolution,aggregation
 115,a,1-RH[0]/100,"",,2011-01-01 01:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 36,aalj,AALJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 39,acaj,ACAJ[1],ug/m3,,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg

@@ -29,7 +29,7 @@ with open(file_name) as f:
     reader = csv.DictReader(f)
     for row in reader:
         sql = "SELECT * from exposure_list " \
-              "WHERE type = '" + row['type'] + "';"
+              "WHERE variable = '" + row['variable'] + "';"
         cur = conn.cursor()
         cur.execute(sql)
         res = cur.fetchone()
@@ -37,7 +37,7 @@ with open(file_name) as f:
             if row['common_name'] and not (res[4] == row['common_name']):
                 sql_update = "UPDATE exposure_list " \
                              "SET common_name = '" + row['common_name'] + "' " \
-                             "WHERE type = '" + row['type'] + "' ;"
+                             "WHERE variable = '" + row['variable'] + "' ;"
                 print('  --' + sql_update)
                 cur.execute(sql_update)
                 conn.commit()

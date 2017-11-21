@@ -66,15 +66,15 @@ utc_end_date = utc_start_date + (int(ds.dimensions['TSTEP'].size) * delta)
 
 print('###### DRYRUN ######')
 for key in dskeys:
-    sql = "SELECT type " \
+    sql = "SELECT variable " \
           "FROM exposure_list " \
-          "WHERE type='" + key.lower() + "';"
+          "WHERE variable='" + key.lower() + "';"
     cur = conn.cursor()
     cur.execute(sql)
     if not cur.fetchall() and key != 'TFLAG':
         print(key + ': Insert definition')
         sql_add = "INSERT INTO exposure_list " \
-                  "(type, description, units, utc_min_date_time, utc_max_date_time, resolution, aggregation) " \
+                  "(variable, description, units, utc_min_date_time, utc_max_date_time, resolution, aggregation) " \
                   "VALUES ('" + str(ds.variables[key].long_name.lower()).strip() + "', '" + \
                   str(ds.variables[key].var_desc).strip() + "', '" + str(ds.variables[key].units).strip() + \
                   "', '" + str(utc_start_date) + "', '" + str(utc_end_date) + \
@@ -84,7 +84,7 @@ for key in dskeys:
     elif key != 'TFLAG':
         sql_date = "SELECT utc_min_date_time, utc_max_date_time " \
                    "FROM exposure_list " \
-                   "WHERE type='" + key.lower() + "';"
+                   "WHERE variable='" + key.lower() + "';"
         cur = conn.cursor()
         cur.execute(sql_date)
         sd, ed = cur.fetchone()
@@ -93,11 +93,11 @@ for key in dskeys:
             sql_update = ''
             if utc_start_date < sd:
                 sql_update = sql_update + "UPDATE exposure_list SET utc_min_date_time = '" + \
-                             str(utc_start_date) + "' WHERE type='" + key.lower() + "';"
+                             str(utc_start_date) + "' WHERE variable='" + key.lower() + "';"
 
             if utc_end_date > ed:
                 sql_update = sql_update + "UPDATE exposure_list SET utc_max_date_time = '" + \
-                             str(utc_end_date) + "' WHERE type='" + key.lower() + "';"
+                             str(utc_end_date) + "' WHERE variable='" + key.lower() + "';"
 
             print('  --' + sql_update)
         cur.close()

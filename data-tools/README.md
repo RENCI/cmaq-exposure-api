@@ -49,7 +49,7 @@ ALTER TABLE
 ----+-----+-----+---------------
 (0 rows)
 
- id | type | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
+ id | variable | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
 ----+------+-------------+-------+-------------+-------------------+-------------------+------------+-------------
 (0 rows)
 ```
@@ -77,17 +77,17 @@ PM25_FRM: Adding columns
   -- ALTER TABLE exposure_data ADD COLUMN IF NOT EXISTS pm25_frm_avg_14day FLOAT;
   -- ALTER TABLE exposure_data ADD COLUMN IF NOT EXISTS pm25_frm_max_14day FLOAT;
 ALD2: Insert definition
-  --INSERT INTO exposure_list (type, description, units, utc_min_date_time, utc_max_date_time, resolution, aggregation) VALUES ('ald2', '1000.0*ALD2[1]', 'ppbV', '2011-01-01 01:00:00', '2011-02-01 01:00:00', 'hour;day;7day;14day', 'max;avg');
+  --INSERT INTO exposure_list (variable, description, units, utc_min_date_time, utc_max_date_time, resolution, aggregation) VALUES ('ald2', '1000.0*ALD2[1]', 'ppbV', '2011-01-01 01:00:00', '2011-02-01 01:00:00', 'hour;day;7day;14day', 'max;avg');
 ...
 PM25_FRM: Insert definition
-  --INSERT INTO exposure_list (type, description, units, utc_min_date_time, utc_max_date_time, resolution, aggregation) VALUES ('pm25_frm', 'PM25_TOT[0]-(PM25_NO3_loss[0]+PM25_NH4_loss[0])+0.24*(PM25_SO4[0]+PM25_NH4[0]-PM', 'ug/m3', '2011-01-01 01:00:00', '2011-02-01 01:00:00', 'hour;day;7day;14day', 'max;avg');
+  --INSERT INTO exposure_list (variable, description, units, utc_min_date_time, utc_max_date_time, resolution, aggregation) VALUES ('pm25_frm', 'PM25_TOT[0]-(PM25_NO3_loss[0]+PM25_NH4_loss[0])+0.24*(PM25_SO4[0]+PM25_NH4[0]-PM', 'ug/m3', '2011-01-01 01:00:00', '2011-02-01 01:00:00', 'hour;day;7day;14day', 'max;avg');
 ```
 
 The database tables will now reflect the updates based on the parameters discovered in the data file.
 
 ```
 $ docker exec -u postgres database psql -d cmaq -c "select * from exposure_list limit 10;"
- id |   type    |           description           | units | common_name |  utc_min_date_time  |  utc_max_date_time  |     resolution      | aggregation
+ id |   variable    |           description           | units | common_name |  utc_min_date_time  |  utc_max_date_time  |     resolution      | aggregation
 ----+-----------+---------------------------------+-------+-------------+---------------------+---------------------+---------------------+-------------
   1 | ald2      | 1000.0*ALD2[1]                  | ppbV  |             | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
   2 | aldx      | 1000.0*ALDX[1]                  | ppbV  |             | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
@@ -108,12 +108,12 @@ The pre-ingest check should be run on each CMAQ source data file prior to it's i
 
 The source CMAQ files abbreviate the exposure names and don't contain a common name for the abbreviation. The python script named `update-common-name.py` checks the contents of the database against a file named `exposure_list.csv` from the repository and updates the database accordingly.
 
-The user should update the `common_name` column directly in the `exposure_list.csv` file. If a particular exposure type has more than one common name, they should be seperated by a semicolon `;`
+The user should update the `common_name` column directly in the `exposure_list.csv` file. If a particular exposure variable has more than one common name, they should be seperated by a semicolon `;`
 
 - Example `exposure_list.csv`:
 
 	```
-	id,type,description,units,common_name,utc_min_date_time,utc_max_date_time,resolution,aggregation
+	id,variable,description,units,common_name,utc_min_date_time,utc_max_date_time,resolution,aggregation
 	...
 	23,o3,1000.0*O3[1],ppbV,Ozone;O3,2010-01-01 00:00:00,2012-01-01 01:00:00,hour;day;7day;14day,max;avg
 	...
@@ -126,18 +126,18 @@ Usage: `$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/da
 	```
 	$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/data/exposure_list.csv
 	UPDATE: exposure_list common_name
-	  --UPDATE exposure_list SET common_name = 'Acetaldehyde' WHERE type = 'ald2' ;
-	  --UPDATE exposure_list SET common_name = 'Higher Aldehydes' WHERE type = 'aldx' ;
-	  --UPDATE exposure_list SET common_name = 'Formaldehyde' WHERE type = 'form' ;
-	  --UPDATE exposure_list SET common_name = 'Ozone;O3' WHERE type = 'o3' ;
-	  --UPDATE exposure_list SET common_name = 'Particulate Matter 2.5' WHERE type = 'pmij' ;
+	  --UPDATE exposure_list SET common_name = 'Acetaldehyde' WHERE variable = 'ald2' ;
+	  --UPDATE exposure_list SET common_name = 'Higher Aldehydes' WHERE variable = 'aldx' ;
+	  --UPDATE exposure_list SET common_name = 'Formaldehyde' WHERE variable = 'form' ;
+	  --UPDATE exposure_list SET common_name = 'Ozone;O3' WHERE variable = 'o3' ;
+	  --UPDATE exposure_list SET common_name = 'Particulate Matter 2.5' WHERE variable = 'pmij' ;
 	```
 
 - Results in:
 
 	```
-	$ docker exec -u postgres database psql -d cmaq -c "select * from exposure_list where common_name is not null order by type;"
-	 id | type |    description    | units |      common_name       |  utc_min_date_time  |  utc_max_date_time  |     resolution      | aggregation
+	$ docker exec -u postgres database psql -d cmaq -c "select * from exposure_list where common_name is not null order by variable;"
+	 id | variable |    description    | units |      common_name       |  utc_min_date_time  |  utc_max_date_time  |     resolution      | aggregation
 	----+------+-------------------+-------+------------------------+---------------------+---------------------+---------------------+-------------
 	  1 | ald2 | 1000.0*ALD2[1]    | ppbV  | Acetaldehyde           | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
 	  2 | aldx | 1000.0*ALDX[1]    | ppbV  | Higher Aldehydes       | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg

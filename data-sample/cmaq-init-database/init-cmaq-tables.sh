@@ -21,7 +21,7 @@ EXPOSURE_DATA="CREATE TABLE IF NOT EXISTS exposure_data (
 
 EXPOSURE_LIST="CREATE TABLE IF NOT EXISTS exposure_list (
   id                SERIAL UNIQUE PRIMARY KEY,
-  type              TEXT,
+  variable          TEXT,
   description       TEXT,
   units             TEXT,
   common_name       TEXT,
