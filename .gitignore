@@ -2,3 +2,5 @@
 data-tools/pre-ingest/venv
 server/venv
 server/ini/connexion.ini
+config/database.cfg
+config/database.ini
