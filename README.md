@@ -12,8 +12,8 @@ Preliminary assumptions
 		```
 		$ virtualenv -p /PATH_TO/python3 venv
 		$ source venv/bin/activate
-		(venv) $ pip install -r requirements.txt
-		(venv) $ python SOMETHING.py [/PATH_TO/SOME_FILE]
+		(venv)$ pip install -r requirements.txt
+		(venv)$ python SOMETHING.py [/PATH_TO/SOME_FILE]
 		```
 - Docker and docker-compose are available on the host
 	- Generally executed using a `bash` script that performs `docker` or `docker-compose` calls
@@ -31,8 +31,10 @@ Preliminary assumptions
 
 **Data Tools**:
 
-- Pre-ingest checks to validate CMAQ source data against the PostgreSQL database schema
-- Ingest scripts for reading the CMAQ source data into the PostgreSQL database
+- `pre-ingest`: checks to validate CMAQ source data against the PostgreSQL database schema
+- `ingest`: scripts for reading the CMAQ source data into the PostgreSQL database
+- `post-ingest`: scripts for updating the aggregate values of newly ingested data
+- `postgres-functions`: indexes and function generation tools
 - See [README.md](data-tools/README.md) in `data-tools/`
 
 **Server**
