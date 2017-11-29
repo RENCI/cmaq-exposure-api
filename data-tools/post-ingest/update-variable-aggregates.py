@@ -4,7 +4,7 @@ import sys
 import subprocess
 
 dbcfg = ConfigParser()
-dbcfg.read('/PATH_TO/cmaq-exposure-api/config/database.ini')
+dbcfg.read('../../config/database.ini')
 
 try:
     if sys.argv[1] == '--postgres':
