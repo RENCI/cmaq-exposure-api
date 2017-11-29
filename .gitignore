@@ -1,2 +1,10 @@
 .idea
 data-tools/pre-ingest/venv
+server/venv
+server/ini/connexion.ini
+config/database.cfg
+config/database.ini
+data-tools/post-ingest/venv
+data-tools/postgres-functions/venv
+data-tools/postgres-functions/cmaq_variable_aggregates_2010.sql
+data-tools/postgres-functions/cmaq_variable_aggregates_2011.sql
