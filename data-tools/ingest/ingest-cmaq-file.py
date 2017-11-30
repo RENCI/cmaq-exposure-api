@@ -166,12 +166,10 @@ for col in cols.data:
                 var_value = hour_slice.data_vars[var].values.item(0)
                 sql_values.append(var_value)
 
-            print(sql_str)
-            print(sql_values)
-            #with conn:
-                #with conn.cursor() as curs:
-                    #curs.execute(sql_str, sql_values)
-                    #db.commit()
+            with conn:
+                with conn.cursor() as curs:
+                    curs.execute(sql_str, sql_values)
+                    db.commit()
 
 db.close()
 print("Done!", end='\n', flush=True)
