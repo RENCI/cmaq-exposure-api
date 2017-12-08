@@ -37,26 +37,34 @@ paths:
                   properties:
                     variable:
                       type: string
+                      example: o3
                     description:
                       type: string
+                      example: '1000.0*O3[1]'
                     units:
                       type: string
+                      example: ppbV
                     common_name:
                       type: string
+                      example: ozone
                     utc_min_date_time:
                       type: string
                       format: date-time
+                      example: '2010-01-01 00:00:00'
                     utc_max_date_time:
                       type: string
                       format: date-time
+                      example: '2010-12-31 23:00:00'
                     resolution:
                       type: array
                       items:
                         type: string
+                        example: 'hour;day;7day;14day'
                     aggregation:
                       type: array
                       items:
                         type: string
+                        example: 'avg;max'
         '400':
           description: 'Invalid parameter'
         '404':
@@ -90,8 +98,10 @@ paths:
                   properties:
                     variable:
                       type: string
+                      example: o3
                     lat_lon:
                       type: string
+                      example: '35,-80'
                     cmaq_output:
                       type: array
                       items:
@@ -100,9 +110,11 @@ paths:
                           date_time:
                             type: string
                             format: date-time
+                            example: '2010-01-01 00:00:00'
                           value:
                             type: number
                             format: float
+                            example: 49.8195953369141
         '400':
           description: 'Invalid parameter'
         '404':

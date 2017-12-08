@@ -3,7 +3,7 @@ import psycopg2
 import sys
 
 dbcfg = ConfigParser()
-dbcfg.read('/PATH_TO/cmaq-exposure-api/config/database.ini')
+dbcfg.read('../../config/database.ini')
 
 try:
     conn = psycopg2.connect("dbname='" + dbcfg.get('postgres', 'database') +
@@ -113,6 +113,6 @@ for yr in range(min_yr, max_yr + 1, 1):
                   "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 335 PRECEDING AND CURRENT ROW) " \
                   "AS " + var + "_max_14day,\n" \
 
-    f.write(body_3[:-2])
+    f.write(body_3[:-2] + '\n')
     f.write(body_4)
     f.close()

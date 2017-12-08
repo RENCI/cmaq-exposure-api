@@ -110,20 +110,33 @@ definitions:
     properties:
       date_time:
         type: "string"
+        example: "2010-01-01 00:00:00"
         format: "date-time"
       value:
         type: "number"
         format: "float"
+        example: 49.819595
+    example:
+      date_time: "2010-01-01 00:00:00"
+      value: 49.819595
   inline_response_200_1_values:
     properties:
       variable:
         type: "string"
+        example: "o3"
       lat_lon:
         type: "string"
+        example: "35,-80"
       cmaq_output:
         type: "array"
         items:
           $ref: "#/definitions/inline_response_200_1_cmaq_output"
+    example:
+      variable: "o3"
+      cmaq_output:
+      - date_time: "2010-01-01 00:00:00"
+        value: 49.819595
+      lat_lon: "35,-80"
   inline_response_200_1:
     properties:
       values:
@@ -136,6 +149,22 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/inline_response_200_variables"
+    example:
+      variables:
+      - utc_max_date_time: "2010-12-31 23:00:00"
+        variable: "o3"
+        description: "1000.0*O3[1]"
+        aggregation:
+        - "max"
+        - "avg"
+        units: "ppbV"
+        common_name: "ozone"
+        utc_min_date_time: "2010-01-01 00:00:00"
+        resolution:
+        - "hour"
+        - "day"
+        - "7day"
+        - "14day"
   inline_response_200_variables:
     properties:
       variable:

@@ -4,7 +4,7 @@ import sys
 import csv
 
 dbcfg = ConfigParser()
-dbcfg.read('/PATH_TO/cmaq-exposure-api/config/database.ini')
+dbcfg.read('../../config/database.ini')
 
 try:
     file_name = sys.argv[1]
