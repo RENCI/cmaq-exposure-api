@@ -1,3 +1,6 @@
+# used for development purposes
+# only pulls data from rows/cols that reflect latitude,longitude = 35,-80
+
 import pandas as pd
 import xarray as xr
 import numpy as np
@@ -132,43 +135,51 @@ cols = ds.coords['COL']
 rows = ds.coords['ROW']
 dates = ds.coords['TSTEP']
 
+if str(year) == '2010':
+    yr_row = 36
+    yr_col = 113
+else:
+    yr_row = 110
+    yr_col = 341
+
 # for every exposure variable in that year
 # as configuered in yaml...
 for col in cols.data:
     for row in rows.data:
-        # slice data for a day - includes all variables configured
-        tmp_day_slice = ds.isel(COL=col, LAY=0, ROW=row)
-        try:
-            day_slice = tmp_day_slice.drop("TFLAG")
-        except:
-            # doesn't matter - ignore
-            day_slice = tmp_day_slice
+        if row == yr_row and col == yr_col:
+            # slice data for a day - includes all variables configured
+            tmp_day_slice = ds.isel(COL=col, LAY=0, ROW=row)
+            try:
+                day_slice = tmp_day_slice.drop("TFLAG")
+            except:
+                # doesn't matter - ignore
+                day_slice = tmp_day_slice
 
-        var_str = ', '.join(variables)
-        sql_str = 'INSERT INTO ' + table_name + ' (col, row, utc_date_time, ' + var_str + \
-                  ') VALUES (%s, %s, %s, '
+            var_str = ', '.join(variables)
+            sql_str = 'INSERT INTO ' + table_name + ' (col, row, utc_date_time, ' + var_str + \
+                      ') VALUES (%s, %s, %s, '
 
-        for i in range(len(variables) - 1):
-            sql_str += '%s, '
-        sql_str += '%s)'
+            for i in range(len(variables) - 1):
+                sql_str += '%s, '
+            sql_str += '%s)'
 
-        # Go through each hour in this day slice to insert a row in the DB
-        for i in range(tstep_len):
-            hour_slice = day_slice.isel(TSTEP=i)
+            # Go through each hour in this day slice to insert a row in the DB
+            for i in range(tstep_len):
+                hour_slice = day_slice.isel(TSTEP=i)
 
-            # convert numpy date type to python native
-            ns = 1e-9  # number of seconds in a nanosecond
-            dts = datetime.datetime.utcfromtimestamp(dates[i].data.astype(int) * ns)
+                # convert numpy date type to python native
+                ns = 1e-9  # number of seconds in a nanosecond
+                dts = datetime.datetime.utcfromtimestamp(dates[i].data.astype(int) * ns)
 
-            sql_values = [np.asscalar(col) + 1, np.asscalar(row) + 1, dts]
-            for var in variables:
-                var_value = hour_slice.data_vars[var].values.item(0)
-                sql_values.append(var_value)
+                sql_values = [np.asscalar(col) + 1, np.asscalar(row) + 1, dts]
+                for var in variables:
+                    var_value = hour_slice.data_vars[var].values.item(0)
+                    sql_values.append(var_value)
 
-            with conn:
-                with conn.cursor() as curs:
-                    curs.execute(sql_str, sql_values)
-                    db.commit()
+                with conn:
+                    with conn.cursor() as curs:
+                        curs.execute(sql_str, sql_values)
+                        db.commit()
 
 db.close()
 print("Done!", end='\n', flush = True)

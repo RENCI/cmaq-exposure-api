@@ -18,6 +18,7 @@ services:
       - POSTGRES_USERNAME=datatrans
       - POSTGRES_PASSWORD=datatrans
       - POSTGRES_IP=
+      - SWAGGER_HOST=localhost:5000
     ports:
       - '5000:5000'
     networks:

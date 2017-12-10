@@ -13,7 +13,7 @@ if __name__ == '__main__':
         app = connexion.App(__name__, specification_dir='./swagger/')
     else:
         app = connexion.App(__name__, specification_dir='./swagger/', server=parser.get('connexion', 'server'))
-    app.add_api('swagger.yaml', arguments={'title': 'Environmental Exposures API'})
+    app.add_api('swagger.yaml', arguments={'title': 'CMAQ Exposure API'})
     if not parser.get('connexion', 'certfile') or not parser.get('connexion', 'keyfile'):
         app.run(port=int(parser.get('connexion', 'port')),
                 debug=parser.get('connexion', 'debug'))

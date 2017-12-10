@@ -39,7 +39,7 @@ if [[ "$1" = 'app.py' ]]; then
 
     # update swagger.yaml file
     if [[ ! -z ${SWAGGER_HOST} ]]; then
-        sed -i 's/host.*/host: \"'${SWAGGER_HOST}'\"/g' /nih-exposures/swagger/swagger.yaml
+        sed -i 's/host.*/host: \"'${SWAGGER_HOST}'\"/g' /cmaq-exposure/swagger/swagger.yaml
     fi
 
     # update /etc/hosts if POSTGRES_IP is passed in
