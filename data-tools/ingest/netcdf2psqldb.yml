@@ -4,7 +4,7 @@ cmaq-years:
     - 2010
     - 2011
 exposures-db-ini-file: ../../config/database.ini
-exposures-db-table-name: cmaq_exposures_data
+exposures-db-table-name: exposure_data
 cmaq2010:
     netcdf-path: /projects/datatrans/CMAQ/2010/raw/  # must end with /
     netcdf-file-name: CCTM_v502_with_CDC2010_Linux2_x86_64intel.ACONC.20100101.combine_base

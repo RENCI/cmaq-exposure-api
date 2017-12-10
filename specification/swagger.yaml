@@ -1,0 +1,177 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: 'CMAQ Exposure API'
+  description: 'CMAQ Exposure API'
+  termsOfService: None
+  contact:
+    name: Michael J. Stealey
+    url: 'https://github.com/renci/cmaq-exposure-api'
+    email: stealey@renci.org
+  license:
+    name: MIT
+    url: 'http://opensource.org/licenses/MIT'
+host: 'cmaq-dev.edc.renci.org'
+basePath: /v1
+schemes:
+  - https
+paths:
+  /variables:
+    get:
+      summary: 'CMAQ exposure variables'
+      description: 'CMAQ exposure variables'
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/search'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              variables:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    variable:
+                      type: string
+                      example: o3
+                    description:
+                      type: string
+                      example: '1000.0*O3[1]'
+                    units:
+                      type: string
+                      example: ppbV
+                    common_name:
+                      type: string
+                      example: ozone
+                    utc_min_date_time:
+                      type: string
+                      format: date-time
+                      example: '2010-01-01 00:00:00'
+                    utc_max_date_time:
+                      type: string
+                      format: date-time
+                      example: '2010-12-31 23:00:00'
+                    resolution:
+                      type: array
+                      items:
+                        type: string
+                        example: 'hour;day;7day;14day'
+                    aggregation:
+                      type: array
+                      items:
+                        type: string
+                        example: 'avg;max'
+        '400':
+          description: 'Invalid parameter'
+        '404':
+          description: 'No exposure types found'
+        '500':
+          description: 'Server error'
+  /values:
+    get:
+      summary: 'get values for exposure variable at location for date range'
+      description: 'get values for exposure variable at location for date range'
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/variable'
+        - $ref: '#/parameters/start_date'
+        - $ref: '#/parameters/end_date'
+        - $ref: '#/parameters/lat_lon'
+        - $ref: '#/parameters/resolution'
+        - $ref: '#/parameters/aggregation'
+        - $ref: '#/parameters/utc_offset'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              values:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    variable:
+                      type: string
+                      example: o3
+                    lat_lon:
+                      type: string
+                      example: '35,-80'
+                    cmaq_output:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          date_time:
+                            type: string
+                            format: date-time
+                            example: '2010-01-01 00:00:00'
+                          value:
+                            type: number
+                            format: float
+                            example: 49.8195953369141
+        '400':
+          description: 'Invalid parameter'
+        '404':
+          description: 'No values found'
+        '500':
+          description: 'Server error'
+parameters:
+  search:
+    name: search
+    in: query
+    description: 'search for exposure variable like - default is empty'
+    required: false
+    type: string
+  variable:
+    name: variable
+    in: query
+    description: 'cmaq variable - one or more seperated by ;'
+    required: true
+    type: string
+  start_date:
+    name: start_date
+    in: query
+    type: string
+    format: date
+    description: 'start date of range'
+    required: true
+  end_date:
+    name: end_date
+    in: query
+    type: string
+    format: date
+    description: 'end date of range'
+    required: true
+  lat_lon:
+    name: lat_lon
+    in: query
+    type: string
+    description: 'latitude,longitude - one or more pairs seperated by ;'
+    required: true
+  resolution:
+    name: resolution
+    in: query
+    description: 'temporal resolution (day, 7day, 14day) - default is day'
+    required: false
+    type: string
+    default: day
+  aggregation:
+    name: aggregation
+    in: query
+    description: 'numerical aggregation (max, avg) - default is max'
+    required: false
+    type: string
+    default: max
+  utc_offset:
+    name: utc_offset
+    in: query
+    description: 'timezone offset from UTC (utc, eastern, central, mountain, pacific) - default is utc'
+    required: false
+    type: string
+    default: utc

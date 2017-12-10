@@ -1,0 +1,246 @@
+---
+swagger: "2.0"
+info:
+  description: "CMAQ Exposure API"
+  version: "1.0.0"
+  title: "CMAQ Exposure API"
+  termsOfService: "None"
+  contact:
+    name: "Michael J. Stealey"
+    url: "https://github.com/renci/cmaq-exposure-api"
+    email: "stealey@renci.org"
+  license:
+    name: "MIT"
+    url: "http://opensource.org/licenses/MIT"
+host: "cmaq-dev.edc.renci.org"
+basePath: "/v1"
+schemes:
+- "https"
+paths:
+  /variables:
+    get:
+      tags:
+      - "default"
+      summary: "CMAQ exposure variables"
+      description: "CMAQ exposure variables"
+      operationId: "controllers.default_controller.variables_get"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "search"
+        in: "query"
+        description: "search for exposure variable like - default is empty"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        400:
+          description: "Invalid parameter"
+        404:
+          description: "No exposure types found"
+        500:
+          description: "Server error"
+  /values:
+    get:
+      tags:
+      - "default"
+      summary: "get values for exposure variable at location for date range"
+      description: "get values for exposure variable at location for date range"
+      operationId: "controllers.default_controller.values_get"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "variable"
+        in: "query"
+        description: "cmaq variable - one or more seperated by ;"
+        required: true
+        type: "string"
+      - name: "start_date"
+        in: "query"
+        description: "start date of range"
+        required: true
+        type: "string"
+        format: "date"
+      - name: "end_date"
+        in: "query"
+        description: "end date of range"
+        required: true
+        type: "string"
+        format: "date"
+      - name: "lat_lon"
+        in: "query"
+        description: "latitude,longitude - one or more pairs seperated by ;"
+        required: true
+        type: "string"
+      - name: "resolution"
+        in: "query"
+        description: "temporal resolution (day, 7day, 14day) - default is day"
+        required: false
+        type: "string"
+        default: "day"
+      - name: "aggregation"
+        in: "query"
+        description: "numerical aggregation (max, avg) - default is max"
+        required: false
+        type: "string"
+        default: "max"
+      - name: "utc_offset"
+        in: "query"
+        description: "timezone offset from UTC (utc, eastern, central, mountain, pacific)\
+          \ - default is utc"
+        required: false
+        type: "string"
+        default: "utc"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/inline_response_200_1"
+        400:
+          description: "Invalid parameter"
+        404:
+          description: "No values found"
+        500:
+          description: "Server error"
+definitions:
+  inline_response_200_1_cmaq_output:
+    properties:
+      date_time:
+        type: "string"
+        example: "2010-01-01 00:00:00"
+        format: "date-time"
+      value:
+        type: "number"
+        format: "float"
+        example: 49.819595
+    example:
+      date_time: "2010-01-01 00:00:00"
+      value: 49.819595
+  inline_response_200_1_values:
+    properties:
+      variable:
+        type: "string"
+        example: "o3"
+      lat_lon:
+        type: "string"
+        example: "35,-80"
+      cmaq_output:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_1_cmaq_output"
+    example:
+      variable: "o3"
+      cmaq_output:
+      - date_time: "2010-01-01 00:00:00"
+        value: 49.819595
+      lat_lon: "35,-80"
+  inline_response_200_1:
+    properties:
+      values:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_1_values"
+  inline_response_200:
+    properties:
+      variables:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_variables"
+    example:
+      variables:
+      - utc_max_date_time: "2010-12-31 23:00:00"
+        variable: "o3"
+        description: "1000.0*O3[1]"
+        aggregation:
+        - "max"
+        - "avg"
+        units: "ppbV"
+        common_name: "ozone"
+        utc_min_date_time: "2010-01-01 00:00:00"
+        resolution:
+        - "hour"
+        - "day"
+        - "7day"
+        - "14day"
+  inline_response_200_variables:
+    properties:
+      variable:
+        type: "string"
+      description:
+        type: "string"
+      units:
+        type: "string"
+      common_name:
+        type: "string"
+      utc_min_date_time:
+        type: "string"
+        format: "date-time"
+      utc_max_date_time:
+        type: "string"
+        format: "date-time"
+      resolution:
+        type: "array"
+        items:
+          type: "string"
+      aggregation:
+        type: "array"
+        items:
+          type: "string"
+parameters:
+  search:
+    name: "search"
+    in: "query"
+    description: "search for exposure variable like - default is empty"
+    required: false
+    type: "string"
+  variable:
+    name: "variable"
+    in: "query"
+    description: "cmaq variable - one or more seperated by ;"
+    required: true
+    type: "string"
+  start_date:
+    name: "start_date"
+    in: "query"
+    description: "start date of range"
+    required: true
+    type: "string"
+    format: "date"
+  end_date:
+    name: "end_date"
+    in: "query"
+    description: "end date of range"
+    required: true
+    type: "string"
+    format: "date"
+  lat_lon:
+    name: "lat_lon"
+    in: "query"
+    description: "latitude,longitude - one or more pairs seperated by ;"
+    required: true
+    type: "string"
+  resolution:
+    name: "resolution"
+    in: "query"
+    description: "temporal resolution (day, 7day, 14day) - default is day"
+    required: false
+    type: "string"
+    default: "day"
+  aggregation:
+    name: "aggregation"
+    in: "query"
+    description: "numerical aggregation (max, avg) - default is max"
+    required: false
+    type: "string"
+    default: "max"
+  utc_offset:
+    name: "utc_offset"
+    in: "query"
+    description: "timezone offset from UTC (utc, eastern, central, mountain, pacific)\
+      \ - default is utc"
+    required: false
+    type: "string"
+    default: "utc"
