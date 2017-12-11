@@ -1,15 +1,15 @@
 version: '3.1'
-  services:
-    database:
-      build:
-        context: ./
-        dockerfile: Dockerfile
-      container_name: database
-      ports:
-        - "5432:5432"
-      networks:
-        - cmaq_exposure_api
-      restart: always
+services:
+  database:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: database
+    ports:
+      - "5432:5432"
+    networks:
+      - cmaq_exposure_api
+    restart: always
 
 networks:
   cmaq_exposure_api:
