@@ -16,8 +16,10 @@ sys.path.append(parser.get('sys-path', 'controllers'))
 def variables_get(search=None) -> str:
     session = Session()
     if search:
-        results = session.query(ExposureList).filter(or_(ExposureList.variable.like(str('%' + search + '%')),
-                                                         ExposureList.common_name.like(str('%' + search + '%')))).all()
+        search = search.lower()
+        results = session.query(ExposureList).filter(or_(
+            func.lower(ExposureList.variable).like(str('%' + search + '%')),
+            func.lower(ExposureList.common_name).like(str('%' + search + '%')))).all()
     else:
         results = session.query(ExposureList).all()
     data = jsonify({"cmaq": [dict(variable=o.variable,
