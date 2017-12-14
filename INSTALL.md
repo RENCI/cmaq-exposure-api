@@ -57,7 +57,7 @@ Start PostgreSQL database
 	./start-database.sh
 	```
 
-- Pre-populated database (skip to: [Run the api-server]() when completed)
+- Pre-populated database (skip to: [Run the api-server](#apiserver) when completed)
 
 	```
 	cd postgres96/
@@ -154,7 +154,7 @@ deactivate
 	docker exec -u postgres database pg_dumpall -c -f /var/lib/pgsql/cmaq_full.sql
 	```
 
-### Run the api-server
+### <a name="apiserver"></a>Run the api-server
 
 Create configuration file `ini/connexion.ini` and update the `FQDN_OR_IP ` settings
 
@@ -216,3 +216,75 @@ May require ports be opened for viewing the UI, in this case, port 5000.
 
 
 ## Production
+
+TODO
+
+### Database
+
+The database should be deployed in the manner as described above, but using a genuine deployment instead of a Docker based one.
+
+If using CentOS7 and PostgreSQL 9.6, the [postgres96/Dockerfile](postgres96/Dockerfile) can serve as a guide.
+
+### API Server
+When running in production the server should use legitimate SSL certificates, the gevent server, and turn debugging off.
+
+If run from Python3, update the `ini/connexion.ini` file to reflect the necessary changes
+
+- Example `ini/connexion.ini` file:
+
+	```
+	[connexion]
+	server = gevent
+	debug = False
+	port = 443
+	keyfile = /PATH_TO/SSL_CERT.key
+	certfile = /PATH_TO/SSL_CERT.crt
+	
+	[sys-path]
+	exposures = ./exposures
+	controllers = ./controllers
+	
+	[postgres]
+	host = FQDN_OR_IP
+	port = 5432
+	database = cmaq
+	username = datatrans
+	password = datatrans
+	```
+
+If run using Docker, update the `server/docker-compose.yml` file to reflect the necessary changes
+
+- Example `server/docker-compose.yml` file:
+
+	```
+	version: '3.1'
+	services:
+	  api-server:
+	    build:
+	      context: ./
+	      dockerfile: Dockerfile
+	    container_name: api-server
+	    environment:
+	      - CONNEXION_SERVER=gevent
+	      - CONNEXION_DEBUG=False
+	      - API_SERVER_HOST=HOST_FQDN_OR_IP
+	      - API_SERVER_PORT=443
+	      - API_SERVER_KEYFILE=/PATH_TO/SSL_CERT.key
+	      - API_SERVER_CERTFILE=/PATH_TO/SSL_CERT.crt
+	      - POSTGRES_HOST=DATABASE_FQDN_OR_IP
+	      - POSTGRES_PORT=5432
+	      - POSTGRES_DATABASE=cmaq
+	      - POSTGRES_USERNAME=datatrans
+	      - POSTGRES_PASSWORD=datatrans
+	      - POSTGRES_IP=
+	      - SWAGGER_HOST=HOST_FQDN_OR_IP:443
+	    ports:
+	      - '443:5000'
+	#     networks:
+	#       - postgres96_cmaq_exposure_api
+	    restart: always
+	
+	# networks:
+	#   postgres96_cmaq_exposure_api:
+	#     external: true
+	```

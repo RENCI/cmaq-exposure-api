@@ -16,10 +16,19 @@ Assumptions
 - You are running on a platform where Docker and docker-compose is installed
 - You are using an account that has rights to run Docker
 
+A flag named `--load-cmaq` has been provided to make use of a fully populated test database that contains sample data for:
+
+- start date: `2010-12-01 00:00:00`
+- end date: `2011-02-01 01:00:00`
+- lat_lon: `35,-80`
+- pre-loaded postgresql functions and indexes
+
+If the `--load-cmaq` flag is not used, a basic database named `cmaq` is created that the user will be responsible for populating using the scripts found in the `pre-ingest/`, `ingest/`, `postgres-functions/` and `post-ingest/` directories.
+
 From the `postgres96/` directory:
 
 ```
-Usage: ./start-database.sh
+Usage: ./start-database.sh [--load-cmaq]
 ```
 
 Example:

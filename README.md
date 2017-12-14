@@ -1,6 +1,6 @@
 # cmaq-exposure-api
 
-The CMAQ Exposure API is a RESTful data service implemented in [Swagger](https://swagger.io/) using [OpenAPI 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) standards and provides environmental [CMAQ](https://www.cmascenter.org/cmaq/) exposures data based on GeoCodes (latitude,longitude) and dates.
+The CMAQ Exposure API is a RESTful data service implemented in [Swagger](https://swagger.io/) using [OpenAPI 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) standards and provides environmental [CMAQ](https://www.cmascenter.org/cmaq/) exposures data based on GeoCodes (latitude, longitude) and dates.
 
 ## TL;DR
 
@@ -53,6 +53,7 @@ The repository has been broken into multiple sections based on the infrastructur
 **Server**
 
 - Python3/Flask based API server
+- Docker implementation of the API server
 - See [README.md](server/README.md) in `server/`
 
 **Client**

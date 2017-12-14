@@ -17,6 +17,11 @@ docker-compose up -d
 if $LOAD_CMAQ; then
     sleep 5s
     echo "--load-cmaq:"
+    if [[ ! -f $DATA_DIR/cmaq_full.sql  ]]; then
+        cd $DATA_DIR
+        gunzip -k cmaq_full.sql.gz
+        cd -
+    fi
     # Ensure all prior connections to the database are removed prior to dropping the database
     docker exec -u postgres -ti database psql -c "REVOKE CONNECT ON DATABASE postgres FROM public;"
     docker exec -u postgres -ti database psql -c "SELECT pid, pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid();"
