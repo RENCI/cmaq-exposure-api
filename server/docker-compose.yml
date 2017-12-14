@@ -22,8 +22,9 @@ services:
     ports:
       - '5000:5000'
     networks:
-      - cmaq_exposure_api
+      - postgres96_cmaq_exposure_api
     restart: always
 
 networks:
-  cmaq_exposure_api:
+  postgres96_cmaq_exposure_api:
+    external: true

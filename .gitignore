@@ -8,3 +8,7 @@ data-tools/post-ingest/venv
 data-tools/postgres-functions/venv
 data-tools/postgres-functions/cmaq_variable_aggregates_2010.sql
 data-tools/postgres-functions/cmaq_variable_aggregates_2011.sql
+server/__pycache__/
+server/controllers/__pycache__/
+server/exposures/__pycache__/
+data-sample/data/cmaq_full.sql
