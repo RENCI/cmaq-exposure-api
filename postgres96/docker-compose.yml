@@ -13,3 +13,4 @@ services:
 
 networks:
   cmaq_exposure_api:
+    driver: bridge
