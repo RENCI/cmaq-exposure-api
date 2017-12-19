@@ -26,6 +26,7 @@ def variables_get(search=None) -> str:
                                   description=o.description,
                                   units=o.units,
                                   common_name=o.common_name,
+                                  has_quality_metric=o.has_quality_metric,
                                   start_date=o.utc_min_date_time.strftime("%Y-%m-%d %H:%M:%S"),
                                   end_date=o.utc_max_date_time.strftime("%Y-%m-%d %H:%M:%S"),
                                   resolution=o.resolution.split(';'),

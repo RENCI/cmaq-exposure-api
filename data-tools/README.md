@@ -2,20 +2,18 @@
 
 Tools related to data and database maintenance.
 
-**Note**: User specific settings denoted by `/PATH_TO/` in files
+The `cmaq` database has 3 primary tables
 
-1. line 8: `pre-ingest/update-cmaq-tables.py`
-2. line 8: `pre-ingest/update-cmaq-tables-dryrun.py`
-3. line 7: `pre-ingest/update-common-name.py`
-4. line 6: `postgres-functions/generate-aggregation-functions.py`
-5. line 7: `post-ingest/update-variable-aggregates.py`
+- `exposure_data`: CMAQ output data in hourly increments
+- `exposure_list`: CMAQ variable information
+- `data_quality`: CMAQ data quality metrics for specific variables
 
 ## pre-ingest
 
 Sanity checks to run against the database prior to ingesting new CMAQ data.
 Updates to the common name for the CMAQ exposure types.
 
-### Table Column Validation
+### Update exposure\_data and exposure\_list
 
 Prior to running the ingestion scripts the database should be checked for compatibility.
 
@@ -32,12 +30,6 @@ This is done by scanning the CMAQ NetCDF files for the list of variables and che
 **Example**:
 
 **\*** Assumes running python3 environment with the appropriate packages installed as defined in the `requirements.txt` file.
-
-- Also ensure that the `dbcfg.read` call is pointing to the correct directory on your system.
-
-	```
-	line 8: dbcfg.read('/PATH_TO/cmaq-exposure-api/config/database.ini')
-	```
 
 Initially the database starts as stark tables with no data in them. Reference from the `postgres96/init-cmaq-tables.sh` script.
 
@@ -106,7 +98,7 @@ $ docker exec -u postgres database psql -d cmaq -c "select * from exposure_list 
 
 The pre-ingest check should be run on each CMAQ source data file prior to it's ingestion.
 
-### Update common_name
+### Update exposure\_list::common_name
 
 The source CMAQ files abbreviate the exposure names and don't contain a common name for the abbreviation. The python script named `update-common-name.py` checks the contents of the database against a file named `exposure_list.csv` from the repository and updates the database accordingly.
 
@@ -148,6 +140,10 @@ Usage: `$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/da
 	 73 | pmij | ATOTI[0]+ATOTJ[0] | ug/m3 | Particulate Matter 2.5 | 2011-01-01 01:00:00 | 2011-02-01 01:00:00 | hour;day;7day;14day | max;avg
 	(5 rows)
 	```
+
+### Update data\_quality
+
+
 
 ## ingest
 
