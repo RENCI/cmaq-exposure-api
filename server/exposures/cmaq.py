@@ -142,13 +142,13 @@ class CmaqExposures(object):
             coords = lat_lon.split(',')
             for var in var_set:
                 # determine exposure type to query
-                exposure = var
                 cmaq_output = []
                 for years in year_set:
                     start_time = years[0]
                     end_time = years[1]
                     row, col = latlon2rowcol(coords[0], coords[1], str(start_time.year))
                     # set resolution and aggregate to query
+                    exposure = var
                     if kwargs.get('resolution') == 'day':
                         exposure += '_' + kwargs.get('aggregation') + '_24hr'
                     elif kwargs.get('resolution') == '7day':

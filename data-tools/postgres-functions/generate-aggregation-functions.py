@@ -1,7 +1,6 @@
-import sys
 from configparser import ConfigParser
-
 import psycopg2
+import sys
 
 dbcfg = ConfigParser()
 dbcfg.read('../../config/database.ini')
@@ -74,7 +73,7 @@ for yr in range(min_yr, max_yr + 1, 1):
     yr_dict[yr] = []
     sql = "SELECT variable FROM exposure_list " \
           "WHERE '" + str(yr) + "' >= EXTRACT(YEAR FROM utc_min_date_time) AND " \
-                                "'" + str(yr) + "' <= EXTRACT(YEAR FROM utc_max_date_time) ORDER BY variable;"
+          "'" + str(yr) + "' <= EXTRACT(YEAR FROM utc_max_date_time) ORDER BY variable;"
     cur.execute(sql)
     for rec in cur:
         yr_dict[yr] += rec
@@ -82,10 +81,9 @@ for yr in range(min_yr, max_yr + 1, 1):
     f = open('cmaq_variable_aggregates_' + str(yr) + '.sql', 'w')
     f.write("-- drop prior function if it exists\n" \
             "DROP FUNCTION IF EXISTS cmaq_variable_aggregates_" + str(yr) + "(TEXT);\n" \
-                                                                            "\n" \
-                                                                            "-- populate aggregates over give date\n" \
-                                                                            "CREATE OR REPLACE FUNCTION cmaq_variable_aggregates_" + str(
-        yr) + " (\n")
+            "\n" \
+            "-- populate aggregates over give date\n" \
+            "CREATE OR REPLACE FUNCTION cmaq_variable_aggregates_" + str(yr) + " (\n")
     f.write(body_1)
     body_2 = ''
     for var in yr_dict[yr]:
@@ -97,24 +95,24 @@ for yr in range(min_yr, max_yr + 1, 1):
     body_3 = ''
     for var in yr_dict[yr]:
         body_3 += "\t\t\t\t\tavg(cd." + var + ")\n" \
-                                              "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 23 PRECEDING AND CURRENT ROW) " \
-                                              "AS " + var + "_avg_24hr,\n" \
-                                                            "\t\t\t\t\tmax(cd." + var + ")\n" \
-                                                                                        "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 23 PRECEDING AND CURRENT ROW) " \
-                                                                                        "AS " + var + "_max_24hr,\n" \
-                                                                                                      "\t\t\t\t\tavg(cd." + var + ")\n" \
-                                                                                                                                  "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 167 PRECEDING AND CURRENT ROW) " \
-                                                                                                                                  "AS " + var + "_avg_7day,\n" \
-                                                                                                                                                "\t\t\t\t\tmax(cd." + var + ")\n" \
-                                                                                                                                                                            "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 167 PRECEDING AND CURRENT ROW) " \
-                                                                                                                                                                            "AS " + var + "_max_7day,\n" \
-                                                                                                                                                                                          "\t\t\t\t\tavg(cd." + var + ")\n" \
-                                                                                                                                                                                                                      "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 335 PRECEDING AND CURRENT ROW) " \
-                                                                                                                                                                                                                      "AS " + var + "_avg_14day,\n" \
-                                                                                                                                                                                                                                    "\t\t\t\t\tmax(cd." + var + ")\n" \
-                                                                                                                                                                                                                                                                "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 335 PRECEDING AND CURRENT ROW) " \
-                                                                                                                                                                                                                                                                "AS " + var + "_max_14day,\n" \
- \
-                f.write(body_3[:-2] + '\n')
+                  "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 23 PRECEDING AND CURRENT ROW) " \
+                  "AS " + var + "_avg_24hr,\n" \
+                  "\t\t\t\t\tmax(cd." + var + ")\n" \
+                  "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 23 PRECEDING AND CURRENT ROW) " \
+                  "AS " + var + "_max_24hr,\n" \
+                  "\t\t\t\t\tavg(cd." + var + ")\n" \
+                  "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 167 PRECEDING AND CURRENT ROW) " \
+                  "AS " + var + "_avg_7day,\n" \
+                  "\t\t\t\t\tmax(cd." + var + ")\n" \
+                  "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 167 PRECEDING AND CURRENT ROW) " \
+                  "AS " + var + "_max_7day,\n" \
+                  "\t\t\t\t\tavg(cd." + var + ")\n" \
+                  "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 335 PRECEDING AND CURRENT ROW) " \
+                  "AS " + var + "_avg_14day,\n" \
+                  "\t\t\t\t\tmax(cd." + var + ")\n" \
+                  "\t\t\t\t\t\tOVER (ORDER BY cd.utc_date_time ROWS BETWEEN 335 PRECEDING AND CURRENT ROW) " \
+                  "AS " + var + "_max_14day,\n" \
+
+    f.write(body_3[:-2] + '\n')
     f.write(body_4)
     f.close()
