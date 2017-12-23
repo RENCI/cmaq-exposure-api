@@ -1,8 +1,9 @@
-from netCDF4 import Dataset
+import sys
 from configparser import ConfigParser
 from datetime import datetime, timedelta
+from netCDF4 import Dataset
+
 import psycopg2
-import sys
 
 dbcfg = ConfigParser()
 dbcfg.read('../../config/database.ini')
@@ -43,12 +44,12 @@ for key in dskeys:
     if not cur.fetchall() and key != 'TFLAG':
         print(key + ': Adding columns')
         newcols = (key.lower(),
-                    key.lower() + '_avg_24hr',
-                    key.lower() + '_max_24hr',
-                    key.lower() + '_avg_7day',
-                    key.lower() + '_max_7day',
-                    key.lower() + '_avg_14day',
-                    key.lower() + '_max_14day')
+                   key.lower() + '_avg_24hr',
+                   key.lower() + '_max_24hr',
+                   key.lower() + '_avg_7day',
+                   key.lower() + '_max_7day',
+                   key.lower() + '_avg_14day',
+                   key.lower() + '_max_14day')
         sql_add = ''
         for row in newcols:
             sql_add = sql_add + "ALTER TABLE exposure_data ADD COLUMN IF NOT EXISTS " + row + " FLOAT;"

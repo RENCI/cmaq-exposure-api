@@ -27,6 +27,10 @@ except psycopg2.OperationalError as e:
     print(e)
     sys.exit(1)
 
+# develop - set begin_date and end_date
+min_date_time = '2010-12-01 00:00:00'
+max_date_time = '2011-02-01 00:00:00'
+
 # if exposure_list doesn't have the has_quality_metric column, add it and default to FALSE
 sql = "SELECT column_name " \
       "FROM information_schema.columns " \
@@ -72,30 +76,31 @@ with open(file_name) as f:
 with open(file_name) as f:
     reader = csv.DictReader(f)
     for row in reader:
-        # check if date-time row already exists
-        sql = "SELECT * FROM quality_metrics_data WHERE utc_date_time = '" + row['Date'] + "';"
-        cur = conn.cursor()
-        cur.execute(sql)
-        if not cur.fetchall():
-            dq_vars = ''
-            dq_vals = '\'' + str(row['Date']) + '\', '
-            for dq in dq_dict:
-                dq_vars += variable + '_' + dq + ', '
-                dq_vals += str(row[str(dq_dict[dq])]) + ', '
-            sql_stmt = "INSERT INTO quality_metrics_data " \
-                       "(utc_date_time, " + dq_vars[:-2] + ") " \
-                                                           "VALUES (" + dq_vals[:-2] + ");"
-        else:
-            dq_vals = ''
-            for dq in dq_dict:
-                dq_vals += variable + '_' + dq + ' = ' + str(row[str(dq_dict[dq])]) + ', '
-            sql_stmt = "UPDATE quality_metrics_data " \
-                       "SET " + dq_vals[:-2] + " " \
-                                               "WHERE utc_date_time = '" + row['Date'] + "';"
-        print('  -- ' + sql_stmt)
-        cur.execute(sql_stmt)
-        conn.commit()
-        cur.close()
+        if row['Date'] >= min_date_time and row['Date'] <= max_date_time:
+            # check if date-time row already exists
+            sql = "SELECT * FROM quality_metrics_data WHERE utc_date_time = '" + row['Date'] + "';"
+            cur = conn.cursor()
+            cur.execute(sql)
+            if not cur.fetchall():
+                dq_vars = ''
+                dq_vals = '\'' + str(row['Date']) + '\', '
+                for dq in dq_dict:
+                    dq_vars += variable + '_' + dq + ', '
+                    dq_vals += str(row[str(dq_dict[dq])]) + ', '
+                sql_stmt = "INSERT INTO quality_metrics_data " \
+                           "(utc_date_time, " + dq_vars[:-2] + ") " \
+                                                               "VALUES (" + dq_vals[:-2] + ");"
+            else:
+                dq_vals = ''
+                for dq in dq_dict:
+                    dq_vals += variable + '_' + dq + ' = ' + str(row[str(dq_dict[dq])]) + ', '
+                sql_stmt = "UPDATE quality_metrics_data " \
+                           "SET " + dq_vals[:-2] + " " \
+                                                   "WHERE utc_date_time = '" + row['Date'] + "';"
+            print('  -- ' + sql_stmt)
+            cur.execute(sql_stmt)
+            conn.commit()
+            cur.close()
 
 # set quality metrics flags to TRUE for variable in quality_metrics_list
 for dq in dq_dict:

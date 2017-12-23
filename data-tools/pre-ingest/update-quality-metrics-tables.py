@@ -1,7 +1,8 @@
-from configparser import ConfigParser
-import psycopg2
-import sys
 import csv
+import sys
+from configparser import ConfigParser
+
+import psycopg2
 
 dbcfg = ConfigParser()
 dbcfg.read('../../config/database.ini')

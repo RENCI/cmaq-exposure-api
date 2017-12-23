@@ -1,9 +1,10 @@
 # coding: utf-8
-from sqlalchemy import ARRAY, Boolean, CheckConstraint, Column, DateTime, Float, Index, Integer, String, Table, Text, text
-from geoalchemy2.types import Geometry
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.dialects.postgresql import TEXT, DOUBLE_PRECISION
+from sqlalchemy import ARRAY, Boolean, CheckConstraint, Column, DateTime, Float, Index, Integer, String, Table, Text, \
+    text
 
+from geoalchemy2.types import Geometry
+from sqlalchemy.dialects.postgresql import TEXT, DOUBLE_PRECISION
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -914,7 +915,6 @@ t_geography_columns = Table(
     Column('srid', Integer),
     Column('type', Text)
 )
-
 
 t_geometry_columns = Table(
     'geometry_columns', metadata,
@@ -2519,7 +2519,6 @@ t_raster_columns = Table(
     Column('extent', Geometry),
     Column('spatial_index', Boolean)
 )
-
 
 t_raster_overviews = Table(
     'raster_overviews', metadata,

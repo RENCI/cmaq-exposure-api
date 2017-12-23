@@ -1,12 +1,13 @@
 import sys
-from datetime import datetime, timedelta
-import pytz
-from sqlalchemy import extract
 from configparser import ConfigParser
-from flask import jsonify
-from models import ExposureDatum, ExposureList
+from datetime import datetime, timedelta
+from sqlalchemy import extract
+
+import pytz
 from controllers import Session
 from exposures.cmaq_utils import latlon2rowcol
+from flask import jsonify
+from models import ExposureDatum, ExposureList, QualityMetricsList, QualityMetricsDatum
 
 parser = ConfigParser()
 parser.read('ini/connexion.ini')
@@ -15,7 +16,6 @@ sys.path.append(parser.get('sys-path', 'controllers'))
 
 
 class CmaqExposures(object):
-
     def is_valid_date_range(self, **kwargs):
         session = Session()
         var_set = kwargs.get('variable').split(';')
@@ -118,50 +118,88 @@ class CmaqExposures(object):
         # datetime objects for query and output adjustment
         start_time = datetime.strptime(kwargs.get('start_date'), "%Y-%m-%d")
         end_time = datetime.strptime(kwargs.get('end_date'), "%Y-%m-%d") + timedelta(hours=23)
+        if start_time.year == end_time.year:
+            year_set = [(start_time, end_time)]
+        else:
+            s_time = start_time
+            e_time = end_time
+            yr_range = range(s_time.year, e_time.year + 1, 1)
+            year_set = []
+            for yr in yr_range:
+                if datetime(yr, 1, 1, 0, 0) <= s_time:
+                    start_time = s_time
+                else:
+                    start_time = datetime(yr, 1, 1, 0, 0)
+                if datetime(yr, 12, 31, 23, 0) >= e_time:
+                    end_time = e_time
+                else:
+                    end_time = datetime(yr, 12, 31, 23, 0)
+                year_set += [(start_time, end_time)]
         # retrieve query result for each lat,lon pair and add to data object
         lat_lon_set = kwargs.get('lat_lon').split(';')
         var_set = kwargs.get('variable').split(';')
         for lat_lon in lat_lon_set:
             coords = lat_lon.split(',')
-            row, col = latlon2rowcol(coords[0], coords[1], str(start_time.year))
-            # print(row,col)
             for var in var_set:
                 # determine exposure type to query
                 exposure = var
-                # set resolution and aggregate to query
-                if kwargs.get('resolution') == 'day':
-                    exposure += '_' + kwargs.get('aggregation') + '_24hr'
-                elif kwargs.get('resolution') == '7day':
-                    exposure += '_' + kwargs.get('aggregation') + '_7day'
-                elif kwargs.get('resolution') == '14day':
-                    exposure += '_' + kwargs.get('aggregation') + '_14day'
-                session = Session()
-                if kwargs.get('resolution') == 'hour':
-                    # hourly resolution of data - return all hours for date range
-                    query = session.query(ExposureDatum.id,
-                                          ExposureDatum.utc_date_time,
-                                          getattr(ExposureDatum, exposure)). \
-                        filter(ExposureDatum.utc_date_time >= start_time + timedelta(hours=utc_offset)). \
-                        filter(ExposureDatum.utc_date_time <= end_time + timedelta(hours=utc_offset)). \
-                        filter(ExposureDatum.row == row). \
-                        filter(ExposureDatum.col == col)
-                else:
-                    # daily resolution of data - return only matched hours for date range
-                    query = session.query(ExposureDatum.id,
-                                          ExposureDatum.utc_date_time,
-                                          getattr(ExposureDatum, exposure)).\
-                        filter(ExposureDatum.utc_date_time >= start_time + timedelta(hours=utc_offset)).\
-                        filter(ExposureDatum.utc_date_time <= end_time + timedelta(hours=utc_offset)).\
-                        filter(ExposureDatum.row == row).\
-                        filter(ExposureDatum.col == col).\
-                        filter(extract('hour', ExposureDatum.utc_date_time) == utc_offset)
-                session.close()
-                # add query output to data object in JSON structured format
                 cmaq_output = []
-                for cmaq_id, cmaq_date_time, cmaq_exp in query:
-                    cmaq_output.append({'date_time': cmaq_date_time.strftime("%Y-%m-%d %H:%M:%S"),
-                                        'value': float(cmaq_exp)})
-
+                for years in year_set:
+                    start_time = years[0]
+                    end_time = years[1]
+                    row, col = latlon2rowcol(coords[0], coords[1], str(start_time.year))
+                    # set resolution and aggregate to query
+                    if kwargs.get('resolution') == 'day':
+                        exposure += '_' + kwargs.get('aggregation') + '_24hr'
+                    elif kwargs.get('resolution') == '7day':
+                        exposure += '_' + kwargs.get('aggregation') + '_7day'
+                    elif kwargs.get('resolution') == '14day':
+                        exposure += '_' + kwargs.get('aggregation') + '_14day'
+                    session = Session()
+                    if kwargs.get('resolution') == 'hour':
+                        # hourly resolution of data - return all hours for date range
+                        query = session.query(ExposureDatum.id,
+                                              ExposureDatum.utc_date_time,
+                                              getattr(ExposureDatum, exposure)). \
+                            filter(ExposureDatum.utc_date_time >= start_time + timedelta(hours=utc_offset)). \
+                            filter(ExposureDatum.utc_date_time <= end_time + timedelta(hours=utc_offset)). \
+                            filter(ExposureDatum.row == row). \
+                            filter(ExposureDatum.col == col)
+                    else:
+                        # daily resolution of data - return only matched hours for date range
+                        query = session.query(ExposureDatum.id,
+                                              ExposureDatum.utc_date_time,
+                                              getattr(ExposureDatum, exposure)). \
+                            filter(ExposureDatum.utc_date_time >= start_time + timedelta(hours=utc_offset)). \
+                            filter(ExposureDatum.utc_date_time <= end_time + timedelta(hours=utc_offset)). \
+                            filter(ExposureDatum.row == row). \
+                            filter(ExposureDatum.col == col). \
+                            filter(extract('hour', ExposureDatum.utc_date_time) == utc_offset)
+                    has_quality_metric = session.query(ExposureList.has_quality_metric).filter(
+                        ExposureList.variable == var).scalar()
+                    if has_quality_metric:
+                        dq_vars = [r.variable for r in session.query(QualityMetricsList.variable). \
+                            filter(getattr(QualityMetricsList, var) == 't').all()]
+                        ret_vars = ['utc_date_time']
+                        for r in dq_vars:
+                            ret_vars.append(var + '_' + r)
+                        dq_vals = session.query(*ret_vars).filter(
+                            QualityMetricsDatum.utc_date_time >= start_time).filter(
+                            QualityMetricsDatum.utc_date_time <= end_time).all()
+                    # add query output to data object in JSON structured format
+                    for cmaq_id, cmaq_date_time, cmaq_exp in query:
+                        if has_quality_metric and cmaq_date_time in [x for v in dq_vals for x in v]:
+                            keys = dq_vars
+                            values = list([t for t in dq_vals if t.utc_date_time == cmaq_date_time][0])
+                            del values[0]
+                            quality_metric = dict(zip(keys, values))
+                            cmaq_output.append({'date_time': cmaq_date_time.strftime("%Y-%m-%d %H:%M:%S"),
+                                                'value': float(cmaq_exp),
+                                                'quality_metric': quality_metric})
+                        else:
+                            cmaq_output.append({'date_time': cmaq_date_time.strftime("%Y-%m-%d %H:%M:%S"),
+                                                'value': float(cmaq_exp)})
+                    session.close()
                 data['values'].append({'variable': var,
                                        'lat_lon': lat_lon,
                                        'cmaq_output': cmaq_output})

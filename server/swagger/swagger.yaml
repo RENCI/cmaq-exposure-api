@@ -12,10 +12,10 @@ info:
   license:
     name: "MIT"
     url: "http://opensource.org/licenses/MIT"
-host: "cmaq-dev.edc.renci.org"
+host: "localhost:5000"
 basePath: "/v1"
 schemes:
-- "https"
+- "http"
 paths:
   /variables:
     get:

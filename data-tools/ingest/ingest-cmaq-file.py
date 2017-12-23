@@ -1,13 +1,12 @@
-import pandas as pd
-import xarray as xr
-import numpy as np
 import datetime
-import yaml
-import os
-import re
 import sys
-import psycopg2 as psql
 from configparser import ConfigParser
+
+import numpy as np
+import pandas as pd
+import psycopg2 as psql
+import xarray as xr
+import yaml
 
 settings_file = "./netcdf2psqldb.yml"
 
@@ -105,12 +104,12 @@ db = cmaq_db()
 conn = db.connect()
 table_name = db.get_table_name();
 
-print("Reading data file: " + file_name, end='\n', flush = True)
+print("Reading data file: " + file_name, end='\n', flush=True)
 
 # get data vars we are interested in - or all (set in yaml config)
 variables = cmaq_ds.get_datavars_by_year(str(year))
 
-print("Reading data file: " + file_name, end='\n', flush = True)
+print("Reading data file: " + file_name, end='\n', flush=True)
 ds = cmaq_ds.get_dataset()
 # make any changes needed in dataset
 sdate = str(getattr(ds, 'SDATE'))
@@ -171,4 +170,4 @@ for col in cols.data:
                     db.commit()
 
 db.close()
-print("Done!", end='\n', flush = True)
+print("Done!", end='\n', flush=True)

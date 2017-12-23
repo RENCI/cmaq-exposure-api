@@ -1,7 +1,8 @@
-from configparser import ConfigParser
-import psycopg2
-import sys
 import csv
+import sys
+from configparser import ConfigParser
+
+import psycopg2
 
 dbcfg = ConfigParser()
 dbcfg.read('../../config/database.ini')
@@ -37,7 +38,7 @@ with open(file_name) as f:
             if row['common_name'] and not (res[4] == row['common_name']):
                 sql_update = "UPDATE exposure_list " \
                              "SET common_name = '" + row['common_name'] + "' " \
-                             "WHERE variable = '" + row['variable'] + "' ;"
+                                                                          "WHERE variable = '" + row['variable'] + "' ;"
                 print('  --' + sql_update)
                 cur.execute(sql_update)
                 conn.commit()

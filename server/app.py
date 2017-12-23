@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
-import connexion
 from configparser import ConfigParser
-from flask_cors import CORS
 from gevent import monkey
+
+import connexion
+from flask_cors import CORS
+
 monkey.patch_all()
 
 if __name__ == '__main__':

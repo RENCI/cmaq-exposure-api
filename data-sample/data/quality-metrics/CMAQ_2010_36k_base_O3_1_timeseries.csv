@@ -1,4 +1,4 @@
-"Date","CMAQ_2010_36k_base_Obs_Average","CMAQ_2010_36k_base_Model_Average","CMAQ_2010_36k_base_Bias_Average","CMAQ_2010_36k_base_RMSE_Average","CMAQ_2010_36k_base_Corr_Average"
+"Date","CMAQ_2010_36k_base_Obs_mean","CMAQ_2010_36k_base_Mod_mean","CMAQ_2010_36k_base_MB","CMAQ_2010_36k_base_RMSE","CMAQ_2010_36k_base_COR"
 2010-01-01 00:00:00,15.7729,27.5666,11.7936,18.6757,0.313
 2010-01-01 01:00:00,15.7951,27.8484,12.0533,19.1044,0.301
 2010-01-01 02:00:00,16.2964,27.7711,11.4747,12.3933,0.533

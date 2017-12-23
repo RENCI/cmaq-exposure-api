@@ -1,11 +1,10 @@
 import sys
-import importlib
-from sqlalchemy import create_engine, exists, and_, or_, func
-from models import ExposureDatum, ExposureList
-from flask import jsonify
 from configparser import ConfigParser
+from sqlalchemy import exists, or_, func
+
 from controllers import Session
-from datetime import datetime
+from flask import jsonify
+from models import ExposureList, QualityMetricsList
 
 parser = ConfigParser()
 parser.read('ini/connexion.ini')
@@ -22,11 +21,21 @@ def variables_get(search=None) -> str:
             func.lower(ExposureList.common_name).like(str('%' + search + '%')))).all()
     else:
         results = session.query(ExposureList).all()
+    dq_set = {}
+    for o in results:
+        dq_set[o.variable] = []
+        if o.has_quality_metric:
+            dq_vars = session.query(QualityMetricsList.variable, QualityMetricsList.common_name).filter(
+                getattr(QualityMetricsList, o.variable) == 't').all()
+            for var in dq_vars:
+                dq_set[o.variable].append({'variable': var[0], 'common_name': var[1]})
+
     data = jsonify({"cmaq": [dict(variable=o.variable,
                                   description=o.description,
                                   units=o.units,
                                   common_name=o.common_name,
                                   has_quality_metric=o.has_quality_metric,
+                                  quality_metric=dq_set[o.variable],
                                   start_date=o.utc_min_date_time.strftime("%Y-%m-%d %H:%M:%S"),
                                   end_date=o.utc_max_date_time.strftime("%Y-%m-%d %H:%M:%S"),
                                   resolution=o.resolution.split(';'),
@@ -34,7 +43,7 @@ def variables_get(search=None) -> str:
     return data
 
 
-def values_get(variable, start_date, end_date, lat_lon, resolution = None, aggregation=None, utc_offset=None) -> str:
+def values_get(variable, start_date, end_date, lat_lon, resolution=None, aggregation=None, utc_offset=None) -> str:
     session = Session()
     var_set = variable.split(';')
     for var in var_set:

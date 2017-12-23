@@ -1,7 +1,8 @@
-from configparser import ConfigParser
-import psycopg2
-import sys
 import subprocess
+import sys
+from configparser import ConfigParser
+
+import psycopg2
 
 dbcfg = ConfigParser()
 dbcfg.read('../../config/database.ini')
@@ -42,7 +43,7 @@ for yr in range(min_yr, max_yr + 1, 1):
     yr_dict[yr] = []
     sql = "SELECT variable FROM exposure_list " \
           "WHERE '" + str(yr) + "' >= EXTRACT(YEAR FROM utc_min_date_time) AND " \
-          "'" + str(yr) + "' <= EXTRACT(YEAR FROM utc_max_date_time) ORDER BY variable;"
+                                "'" + str(yr) + "' <= EXTRACT(YEAR FROM utc_max_date_time) ORDER BY variable;"
     cur.execute(sql)
     for rec in cur:
         yr_dict[yr] += rec
