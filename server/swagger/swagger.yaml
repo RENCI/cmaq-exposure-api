@@ -12,15 +12,13 @@ info:
   license:
     name: "MIT"
     url: "http://opensource.org/licenses/MIT"
-host: "localhost:5000"
+host: "cmaq-dev.edc.renci.org"
 basePath: "/v1"
 schemes:
-- "http"
+- "https"
 paths:
   /variables:
     get:
-      tags:
-      - "default"
       summary: "CMAQ exposure variables"
       description: "CMAQ exposure variables"
       operationId: "controllers.default_controller.variables_get"
@@ -30,7 +28,7 @@ paths:
       - name: "search"
         in: "query"
         description: "search for exposure variable like - default is empty"
-        required: false
+        required: false  
         type: "string"
       responses:
         200:
@@ -45,8 +43,6 @@ paths:
           description: "Server error"
   /values:
     get:
-      tags:
-      - "default"
       summary: "get values for exposure variable at location for date range"
       description: "get values for exposure variable at location for date range"
       operationId: "controllers.default_controller.values_get"
@@ -77,7 +73,7 @@ paths:
         type: "string"
       - name: "resolution"
         in: "query"
-        description: "temporal resolution (day, 7day, 14day) - default is day"
+        description: "temporal resolution (hour, day, 7day, 14day) - default is day"
         required: false
         type: "string"
         default: "day"
@@ -110,15 +106,51 @@ definitions:
     properties:
       date_time:
         type: "string"
-        example: "2010-01-01 00:00:00"
         format: "date-time"
+        example: "2010-01-01 00:00:00"
       value:
         type: "number"
         format: "float"
         example: 49.819595
+      quality_metric:
+        $ref: "#/definitions/inline_response_200_1_quality_metric"
     example:
       date_time: "2010-01-01 00:00:00"
+      quality_metric:
+        mod_mean: 31.6488
+        obs_mean: 18.1636
+        mb: 13.4852
+        cor: 0.54
+        rmse: 18.7292
       value: 49.819595
+  inline_response_200_1_quality_metric:
+    properties:
+      cor:
+        type: "number"
+        format: "float"
+        example: 0.54
+      mb:
+        type: "number"
+        format: "float"
+        example: 13.4852
+      mod_mean:
+        type: "number"
+        format: "float"
+        example: 31.6488
+      obs_mean:
+        type: "number"
+        format: "float"
+        example: 18.1636
+      rmse:
+        type: "number"
+        format: "float"
+        example: 18.7292
+    example:
+      mod_mean: 31.6488
+      obs_mean: 18.1636
+      mb: 13.4852
+      cor: 0.54
+      rmse: 18.7292
   inline_response_200_1_values:
     properties:
       variable:
@@ -135,6 +167,20 @@ definitions:
       variable: "o3"
       cmaq_output:
       - date_time: "2010-01-01 00:00:00"
+        quality_metric:
+          mod_mean: 31.6488
+          obs_mean: 18.1636
+          mb: 13.4852
+          cor: 0.54
+          rmse: 18.7292
+        value: 49.819595
+      - date_time: "2010-01-01 00:00:00"
+        quality_metric:
+          mod_mean: 31.6488
+          obs_mean: 18.1636
+          mb: 13.4852
+          cor: 0.54
+          rmse: 18.7292
         value: 49.819595
       lat_lon: "35,-80"
   inline_response_200_1:
@@ -143,6 +189,19 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/inline_response_200_1_values"
+    example:
+      values:
+      - variable: "o3"
+        cmaq_output:
+        - date_time: "2010-01-01 00:00:00"
+          quality_metric:
+            mod_mean: 31.6488
+            obs_mean: 18.1636
+            mb: 13.4852
+            cor: 0.54
+            rmse: 18.7292
+          value: 49.819595
+        lat_lon: "35,-80"
   inline_response_200:
     properties:
       variables:
@@ -153,42 +212,83 @@ definitions:
       variables:
       - utc_max_date_time: "2010-12-31 23:00:00"
         variable: "o3"
+        quality_metric:
+        - variable: "rmse"
+          common_name: "root mean squared error"
         description: "1000.0*O3[1]"
+        has_quality_metric: true
         aggregation:
-        - "max"
-        - "avg"
+        - "avg;max"
         units: "ppbV"
         common_name: "ozone"
         utc_min_date_time: "2010-01-01 00:00:00"
         resolution:
-        - "hour"
-        - "day"
-        - "7day"
-        - "14day"
+        - "hour;day;7day;14day"
   inline_response_200_variables:
     properties:
       variable:
         type: "string"
+        example: "o3"
       description:
         type: "string"
+        example: "1000.0*O3[1]"
+      has_quality_metric:
+        type: "boolean"
+        example: true
+      quality_metric:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_quality_metric"
       units:
         type: "string"
+        example: "ppbV"
       common_name:
         type: "string"
+        example: "ozone"
       utc_min_date_time:
         type: "string"
         format: "date-time"
+        example: "2010-01-01 00:00:00"
       utc_max_date_time:
         type: "string"
         format: "date-time"
+        example: "2010-12-31 23:00:00"
       resolution:
         type: "array"
         items:
           type: "string"
+          example: "hour;day;7day;14day"
       aggregation:
         type: "array"
         items:
           type: "string"
+          example: "avg;max"
+    example:
+      utc_max_date_time: "2010-12-31 23:00:00"
+      variable: "o3"
+      quality_metric:
+      - variable: "rmse"
+        common_name: "root mean squared error"
+      description: "1000.0*O3[1]"
+      has_quality_metric: true
+      aggregation:
+      - "avg;max"
+      units: "ppbV"
+      common_name: "ozone"
+      utc_min_date_time: "2010-01-01 00:00:00"
+      resolution:
+      - "hour;day;7day;14day"
+  inline_response_200_quality_metric:
+    properties:
+      common_name:
+        type: "string"
+        example: "root mean squared error"
+      variable:
+        type: "string"
+        example: "rmse"
+    example:
+      variable: "rmse"
+      common_name: "root mean squared error"
 parameters:
   search:
     name: "search"
@@ -225,7 +325,7 @@ parameters:
   resolution:
     name: "resolution"
     in: "query"
-    description: "temporal resolution (day, 7day, 14day) - default is day"
+    description: "temporal resolution (hour, day, 7day, 14day) - default is day"
     required: false
     type: "string"
     default: "day"
