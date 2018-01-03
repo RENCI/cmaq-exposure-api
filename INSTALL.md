@@ -153,6 +153,51 @@ deactivate
 	```
 	docker exec -u postgres database pg_dumpall -c -f /var/lib/pgsql/cmaq_full.sql
 	```
+	
+### Updated 2018-01-03
+
+Quality metrics for data became available at the domin level for 2010 and 2011 data starting with Ozone (O3).
+
+This required a re-working of the database schema and was done against the existign `cmaq_full.sql` example database. Once completed the exmaple database in this repository was updated to reflect the new schema.
+
+Run the updated `init-cmaq-tables.sh` script
+
+```
+cd data-sample/cmaq-init-database/
+./init-cmaq-tables.sh
+```
+
+Run `pre-ingest` scripts
+
+```
+cd data-tools/pre-ingest/
+virtualenv -p /usr/bin/python3.6 venv
+source venv/bin/activate
+pip install -r requirements.txt
+python update-quality-metrics-tables.py ../../data-sample/data/quality-metrics/AMET-MPE-Metrics.csv 
+deactivate
+```
+
+Run `ingest` scripts
+
+```
+cd data-tools/ingest/
+virtualenv -p /usr/bin/python3.6 venv
+source venv/bin/activate
+pip install -r requirements.txt
+# python ingest-quality-metrics.py FILENAME VARIABLE
+python ingest-quality-metrics-develop.py ../../data-sample/data/quality-metrics/CMAQ_2010_36k_base_O3_1_timeseries.csv o3
+python ingest-quality-metrics-develop.py ../../data-sample/data/quality-metrics/CMAQ_2011_12k_O3_1_timeseries.csv o3
+deactivate
+```
+
+- The pre-populated database named `cmaq_full.sql.gz` was again generated at this stage.
+
+	```
+	docker exec -u postgres database pg_dumpall -c -f /var/lib/pgsql/cmaq_full.sql
+	docker cp database:/var/lib/pgsql/cmaq_full.sql .
+	gzip cmaq_full.sql
+	```
 
 ### <a name="apiserver"></a>Run the api-server
 
