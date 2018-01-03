@@ -19,7 +19,7 @@ if $LOAD_CMAQ; then
     echo "--load-cmaq:"
     if [[ ! -f $DATA_DIR/cmaq_full.sql  ]]; then
         cd $DATA_DIR
-        gunzip -k cmaq_full.sql.gz
+        gunzip -c cmaq_full.sql.gz > cmaq_full.sql
         cd -
     fi
     # Ensure all prior connections to the database are removed prior to dropping the database

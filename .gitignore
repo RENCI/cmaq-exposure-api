@@ -12,3 +12,4 @@ server/__pycache__/
 server/controllers/__pycache__/
 server/exposures/__pycache__/
 data-sample/data/cmaq_full.sql
+data-tools/ingest/venv/

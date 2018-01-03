@@ -1,0 +1,28 @@
+VARNAME,COMMON NAME
+Num_Obs,Number of Paired Observations
+Obs_mean,Mean Observed Value 
+Mod_mean,Mean Modeled Value
+Obs_median,Median of Observed Values
+Mod_median,Median of Modeled Values
+Coverage,Coverage based upon completeness criteria
+MB,Mean Bias
+ME,Mean Error
+NMB,Normalized Mean Bias
+NME,Normalized Mean Error
+NMdnB,Normalized Median Bias
+NMdnE,Normalized Median Error
+FB,Fractional Bias
+FE,Fractional Error
+COR,Pearson Correlation Coefficient
+R_Squared,R-Squared
+Stand_Dev_obs,Standard Deviation of Observed Values
+Stand_Dev_mod,Standard Deviation of Modeled Values
+Coeff_of_Var_obs,Coefficient of Variation for Observed Values
+Coeff_of_Var_mod,Coefficient of Variation for Modeled Values
+Index_of_Agree,Index of Agreement
+RMSE,Root Mean Squared Error
+RMSE_systematic,Systematic Root Mean Squared Error
+RMSE_unsystematic,Unsystematic Root Mean Squared Error
+Skew_Obs,Skewness of Observed Values
+Skew_Mod,Skewness of Modeled Values
+Median_Diff,Median of differences

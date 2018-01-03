@@ -41,6 +41,20 @@ paths:
                     description:
                       type: string
                       example: '1000.0*O3[1]'
+                    has_quality_metric:
+                      type: boolean
+                      example: true
+                    quality_metric:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          common_name:
+                            type: string
+                            example: root mean squared error
+                          variable:
+                            type: string
+                            example: rmse
                     units:
                       type: string
                       example: ppbV
@@ -115,6 +129,29 @@ paths:
                             type: number
                             format: float
                             example: 49.8195953369141
+                          quality_metric:
+                            type: object
+                            properties:
+                              cor:
+                                type: number
+                                format: float
+                                example: 0.54
+                              mb:
+                                type: number
+                                format: float
+                                example: 13.4852
+                              mod_mean:
+                                type: number
+                                format: float
+                                example: 31.6488
+                              obs_mean:
+                                type: number
+                                format: float
+                                example: 18.1636
+                              rmse:
+                                type: number
+                                format: float
+                                example: 18.7292
         '400':
           description: 'Invalid parameter'
         '404':
@@ -157,7 +194,7 @@ parameters:
   resolution:
     name: resolution
     in: query
-    description: 'temporal resolution (day, 7day, 14day) - default is day'
+    description: 'temporal resolution (hour, day, 7day, 14day) - default is day'
     required: false
     type: string
     default: day

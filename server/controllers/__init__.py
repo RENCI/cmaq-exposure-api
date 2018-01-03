@@ -1,7 +1,8 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from configparser import ConfigParser
 import sys
+from configparser import ConfigParser
+from sqlalchemy import create_engine
+
+from sqlalchemy.orm import sessionmaker
 
 parser = ConfigParser()
 parser.read('ini/connexion.ini')
