@@ -147,7 +147,89 @@ Usage: `$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/da
 
 ## ingest
 
-TODO
+Ingest consists of several python scripts used to read raw CMAQ data and insert records into a Postgres database.
+The python scripts are currently written to support the format of 2010 and 2011 CMAQ data, although some effort  was taken to be generic enough to be easily modified in support of changes in data format or data resolution.
+
+Two types of CMAQ data are supported by the scripts:
+* CMAQ data variables and values
+* CMAQ quality metrics for data variables
+
+In addition, two types of scripts exist for ingesting CMAQ data variables and values. 
+
+The first `netcdf2psqldb.py`, configured with a directory name, file name pattern, a calendar year, and list of data variables to process, will read all of the pattern matching netcdf files in the configured directory and extract the CMAQ data variables for that calendar year. It then creates Postgres database records  and inserts them in the pre-existing database, as configured in `cmaq\_exposure\_api/config/database.ini`.
+
+The second script, `ingest-cmaq-file.py`, given and CMAQ netcdf file name and calendar year as parameters, does the same work as the `netcdf2psqldb.py`, but only for the CMAQ data found in a single netcdf file. This script was created so that multiple runs of the script can be executed in parallel, on different CMAQ data files.
+
+Both scripts rely on settings configured in `netcdf2psqldb.yml`.
+
+`Netcdf2psqldb.py` uses all of the settings **EXCEPT**:
+* netcdf-file-name
+
+
+`Ingest-cmaq-file.py`only uses the following settings in the .yml file:
+* exposures-db-ini-file
+* exposures-db-table-name
+* data-vars
+
+Example 1:
+Using `netcdf2psqldb.py` - ingest all CMAQ netcdf files in configured directory, for each configured calendar year.
+
+NOTE: The following configuration will cause the `netcdf2psqldb.py` script to collect and store CMAQ data for the calendar years 2010 & 2011.
+Only CMAQ ozone (o3) data variable info will be collected for calendar year 2010 and all CMAQ data variable info for calendar year 2011.
+
+Contents of `netcdf2psqldb.yml` file:
+
+```
+cmaq-years:
+    - 2010
+    - 2011
+exposures-db-ini-file: ../../config/database.ini
+exposures-db-table-name: exposure_data
+cmaq2010:
+    netcdf-path: /projects/datatrans/CMAQ/2010/raw/  # must end with /
+    netcdf-file-pattern-match: .*\.combine_base
+    data-vars: # enter data vars of interest in CMAQ 2010 netCDF files or 'ALL_OF_THEM' for all
+       - o3
+cmaq2011:
+    netcdf-path: /projects/datatrans/CMAQ/2011/raw/  # must end with /
+    netcdf-file-pattern-match: CCTM_CMAQ_v51_Release_Oct23_NoDust_ed_emis_combine\.aconc\.0[1-9]|1[0-2]
+    data-vars: # enter data vars of interest in CMAQ 2011 netCDF files or 'ALL_OF_THEM' for all
+       - ALL_OF_THEM
+```
+After editing `netcdf2psqldb.yml`, if needed, run `netcdf2psqldb.py` script:
+```
+$ cd /PATH_TO/cmaq-exposure-api/data-tools/ingest
+$ virtualenv -p /PATH_TO/python3 venv
+$ source venv/bin/activate
+(venv)$ pip install -r requirements.txt
+(venv)$ python netcdf2psqldb.py
+```
+
+Example 2:
+Using `ingest-cmaq-file.py` - ingest a given CMAQ netcdf file for a given calendar year.
+
+Contents of `netcdf2psqldb.yml` file:
+(Only required settings provided)
+```
+exposures-db-ini-file: ../../config/database.ini
+exposures-db-table-name: exposure_data
+cmaq2010:
+    data-vars: # enter data vars of interest in CMAQ 2010 netCDF files or 'ALL_OF_THEM' for all
+       - o3
+cmaq2011:
+    data-vars: # enter data vars of interest in CMAQ 2011 netCDF files or 'ALL_OF_THEM' for all
+       - ALL_OF_THEM
+```
+After editing `netcdf2psqldb.yml`, if needed, run `ingest-cmaq-file.py` script:
+```
+$ cd /PATH_TO/cmaq-exposure-api/data-tools/ingest
+$ virtualenv -p /PATH_TO/python3 venv
+$ source venv/bin/activate
+(venv)$ pip install -r requirements.txt
+(venv)$ python ingest-cmaq-file.py /PATH_TO/CCTM_v502_with_CDC2010_Linux2_x86_64intel.ACONC.20100101.combine_base 2010
+```
+
+
 
 ## postgres-functions
 
