@@ -6,7 +6,8 @@ The `cmaq` database has 3 primary tables
 
 - `exposure_data`: CMAQ output data in hourly increments
 - `exposure_list`: CMAQ variable information
-- `data_quality`: CMAQ data quality metrics for specific variables
+- `quality_metrics_data`: CMAQ quality metrics data for specific variables
+- `quality_metrics_list`: CMAQ quality metrics variable information
 
 ## pre-ingest
 
@@ -113,7 +114,7 @@ The user should update the `common_name` column directly in the `exposure_list.c
 	...
 	```
 
-Usage: `$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/data/exposure_list.csv`
+Usage: `$ python update-common-name.py ../../cmaq-exposure-api/data-sample/data/exposure_list.csv`
 
 - Example:
 
@@ -141,9 +142,46 @@ Usage: `$ python update-common-name.py /PATH_TO/cmaq-exposure-api/data-sample/da
 	(5 rows)
 	```
 
-### Update data\_quality
+### Update quality\_metrics\_data and quality\_metrics\_list
 
+1. `update-quality-metrics-tables.py`:
+	- Usage: `$ python update-quality-metrics-tables.py FILENAME`
+	- Validate that columns in `quality_metrics_list` and `quality_metrics_data` are properly configured based on the contents of the `exposure_list` table and the file passed in by `FILENAME`. For the 2010 and 2011 data the file used is located at `data-sample/data/quality-metrics/AMET-MPE-Metrics.csv`.
 
+Usage: `$ python update-quality-metrics-tables.py ../../data-sample/data/quality-metrics/AMET-MPE-Metrics.csv`
+
+- Example:
+
+	```
+	$ python update-quality-metrics-tables.py ../../data-sample/data/quality-metrics/AMET-MPE-Metrics.csv
+	Adding row for quality_metrics_list::variable: num_obs
+	 -- INSERT INTO quality_metrics_list (VARIABLE, common_name) VALUES ('num_obs', 'number of paired observations');
+	Adding row for quality_metrics_list::variable: obs_mean
+	 -- INSERT INTO quality_metrics_list (VARIABLE, common_name) VALUES ('obs_mean', 'mean observed value ');
+	Adding row for quality_metrics_list::variable: mod_mean
+	 -- INSERT INTO quality_metrics_list (VARIABLE, common_name) VALUES ('mod_mean', 'mean modeled value');
+	Adding row for quality_metrics_list::variable: obs_median
+	...
+	Adding column: voc
+	  -- ALTER TABLE quality_metrics_list ADD COLUMN IF NOT EXISTS voc BOOLEAN DEFAULT FALSE;
+	Adding column: afej
+	  -- ALTER TABLE quality_metrics_list ADD COLUMN IF NOT EXISTS afej BOOLEAN DEFAULT FALSE;
+	Adding column: xyl
+	  -- ALTER TABLE quality_metrics_list ADD COLUMN IF NOT EXISTS xyl BOOLEAN DEFAULT FALSE;
+	Adding column: aalj
+	  -- ALTER TABLE quality_metrics_list ADD COLUMN IF NOT EXISTS aalj BOOLEAN DEFAULT FALSE;
+	Adding column: asij
+	  -- ALTER TABLE quality_metrics_list ADD COLUMN IF NOT EXISTS asij BOOLEAN DEFAULT FALSE;
+	...
+	Adding column: xyl_rmse_unsystematic
+	  -- ALTER TABLE quality_metrics_data ADD COLUMN IF NOT EXISTS xyl_rmse_unsystematic FLOAT;
+	Adding column: xyl_skew_obs
+	  -- ALTER TABLE quality_metrics_data ADD COLUMN IF NOT EXISTS xyl_skew_obs FLOAT;
+	Adding column: xyl_skew_mod
+	  -- ALTER TABLE quality_metrics_data ADD COLUMN IF NOT EXISTS xyl_skew_mod FLOAT;
+	Adding column: xyl_median_diff
+	  -- ALTER TABLE quality_metrics_data ADD COLUMN IF NOT EXISTS xyl_median_diff FLOAT;
+	```
 
 ## ingest
 
@@ -156,7 +194,7 @@ Two types of CMAQ data are supported by the scripts:
 
 In addition, two types of scripts exist for ingesting CMAQ data variables and values. 
 
-The first `netcdf2psqldb.py`, configured with a directory name, file name pattern, a calendar year, and list of data variables to process, will read all of the pattern matching netcdf files in the configured directory and extract the CMAQ data variables for that calendar year. It then creates Postgres database records  and inserts them in the pre-existing database, as configured in `cmaq\_exposure\_api/config/database.ini`.
+The first `netcdf2psqldb.py`, configured with a directory name, file name pattern, a calendar year, and list of data variables to process, will read all of the pattern matching netcdf files in the configured directory and extract the CMAQ data variables for that calendar year. It then creates Postgres database records  and inserts them in the pre-existing database, as configured in `cmaq_exposure_api/config/database.ini`.
 
 The second script, `ingest-cmaq-file.py`, given and CMAQ netcdf file name and calendar year as parameters, does the same work as the `netcdf2psqldb.py`, but only for the CMAQ data found in a single netcdf file. This script was created so that multiple runs of the script can be executed in parallel, on different CMAQ data files.
 
