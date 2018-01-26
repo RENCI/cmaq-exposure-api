@@ -45,6 +45,8 @@ def variables_get(search=None) -> str:
 
 def values_get(variable, start_date, end_date, lat_lon, resolution=None, aggregation=None, utc_offset=None) -> str:
     session = Session()
+    variable = "".join(variable.split()).lower()
+    lat_lon = "".join(lat_lon.split())
     var_set = variable.split(';')
     for var in var_set:
         if not session.query(exists().where(ExposureList.variable == var)).scalar():

@@ -6,6 +6,18 @@ All scripts herein assume the use of the development [database](../postgres96). 
 
 **Note**: Adapting these scripts for production use is left to the user and will not be discussed here.
 
+## Data
+
+Sample data is provided that is either a copy of, or derived from the production CMAQ data for 2010 and 2011.
+
+- `cmaq_full.sql.gz` - Sample database in `.gz` format. Used when the `--load-cmaq` flag is present in the `start-database.sh` call.
+- `exposure_list.csv` - List of exposure variables as found when 2010 and 2011 CMAQ data is loaded. Used by the `data-tools/update-common-name.py` script to populate the `common_name` attribute if present.
+- `quality-metrics/`
+	- `AMET-MPE-Metrics.csv` - List of quality metric variables and common names used to populate the `quailty_metrics_list` table.
+	- `CMAQ_2010_36k_base_O3_1_timeseries.csv` - CMAQ domain level quality metric data for Ozone (O3) during 2010.
+	- `CMAQ_2011_12k_O3_1_timeseries.csv` - CMAQ domain level quality metric data for Ozone (O3) during 2011.
+
+
 ## Configuration and initialization
 
 The scripts herein are setup to find their configuration files relative to their position in the repository, adjust as required for your deployment.
@@ -25,6 +37,8 @@ The scripts herein are setup to find their configuration files relative to their
 	```
 
 **Initialize database**
+
+Initialzation scripts are found in the directory named `data-sample/cmaq-init-database/`
 
 - The script named `init-cmaq-db.sh` is used to initialize the database based on the settings found in `config/database.cfg`.
 
@@ -81,12 +95,24 @@ The scripts herein are setup to find their configuration files relative to their
 	ALTER TABLE
 	CREATE TABLE
 	ALTER TABLE
+	CREATE TABLE
+	ALTER TABLE
+	CREATE TABLE
+	ALTER TABLE
 	 id | col | row | utc_date_time
 	----+-----+-----+---------------
 	(0 rows)
 	
-	 id | variable | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
-	----+------+-------------+-------+-------------+-------------------+-------------------+------------+-------------
+	 id | variable | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation | has_quality_metric
+	----+----------+-------------+-------+-------------+-------------------+-------------------+------------+-------------+--------------------
+	(0 rows)
+	
+	 id | utc_date_time
+	----+---------------
+	(0 rows)
+	
+	 id | variable | description | common_name
+	----+----------+-------------+-------------
 	(0 rows)
 	```
 	
@@ -136,11 +162,23 @@ Example:
 	ALTER TABLE
 	CREATE TABLE
 	ALTER TABLE
+	CREATE TABLE
+	ALTER TABLE
+	CREATE TABLE
+	ALTER TABLE
 	 id | col | row | utc_date_time
 	----+-----+-----+---------------
 	(0 rows)
 	
-	 id | variable | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation
-	----+------+-------------+-------+-------------+-------------------+-------------------+------------+-------------
+	 id | variable | description | units | common_name | utc_min_date_time | utc_max_date_time | resolution | aggregation | has_quality_metric
+	----+----------+-------------+-------+-------------+-------------------+-------------------+------------+-------------+--------------------
+	(0 rows)
+	
+	 id | utc_date_time
+	----+---------------
+	(0 rows)
+	
+	 id | variable | description | common_name
+	----+----------+-------------+-------------
 	(0 rows)
 	```
