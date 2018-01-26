@@ -176,6 +176,7 @@ Using `netcdf2psqldb.py` - ingest all CMAQ netcdf files in configured directory,
 
 NOTE: The following configuration will cause the `netcdf2psqldb.py` script to collect and store CMAQ data for the calendar years 2010 & 2011.
 Only CMAQ ozone (o3) data variable info will be collected for calendar year 2010 and all CMAQ data variable info for calendar year 2011.
+Also note that, depending on system resources & CMAQ data resolution, this process can take a looong time to complete - on the order of weeks.
 
 Contents of `netcdf2psqldb.yml` file:
 
