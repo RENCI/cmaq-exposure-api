@@ -7,6 +7,8 @@ import pandas as pd
 import psycopg2 as psql
 import xarray as xr
 import yaml
+import io
+import csv
 
 settings_file = "./netcdf2psqldb.yml"
 
@@ -89,7 +91,43 @@ class cmaq_dataset:
 
         return variables
 
+# fix cvs header and add a "col" column
+def fix_csv(csv_stream, col):
 
+    new_csv = io.StringIO()
+    writer = csv.writer(new_csv)
+
+    reader = csv.reader((line.replace('\0','') for line in csv_stream), delimiter=',')
+    line = 0;
+
+    # fix cvs header
+    row = reader.__next__()
+
+    # insert "col" in header
+    row.insert(0,"col")
+
+    # change TSTEP to utc_data_time
+    row[2] = "utc_date_time"
+
+    # now make all the other vars lowercase
+    for r in range(0, len(row)):
+        row[r] = row[r].lower()
+    hdr = row 
+       
+    writer.writerow(row)
+
+    # for rest of rows, add a "col" column in the first position
+    for row in reader:
+        if '\0' in row: continue
+        if not row: continue
+        row.insert(0,str(col))
+        writer.writerow(row)
+
+    # reset stream to top
+    new_csv.seek(0)
+    return new_csv, hdr
+
+# Main
 try:
     file_name = sys.argv[1]
     year = sys.argv[2]
@@ -103,8 +141,6 @@ cmaq_ds = cmaq_dataset(file_name)
 db = cmaq_db()
 conn = db.connect()
 table_name = db.get_table_name();
-
-print("Reading data file: " + file_name, end='\n', flush=True)
 
 # get data vars we are interested in - or all (set in yaml config)
 variables = cmaq_ds.get_datavars_by_year(str(year))
@@ -131,43 +167,46 @@ cols = ds.coords['COL']
 rows = ds.coords['ROW']
 dates = ds.coords['TSTEP']
 
-# for every exposure variable in that year
-# as configuered in yaml...
+
+# now go through dataset and get slice for each column
+# to save in DB in bulk
+total_rows = len(cols) * len(rows) * 24
+print("Found " + str(total_rows) + " rows of data to copy into " + table_name + " db table", end='\n', flush=True);
+
 for col in cols.data:
-    for row in rows.data:
-        # slice data for a day - includes all variables configured
-        tmp_day_slice = ds.isel(COL=col, LAY=0, ROW=row)
-        try:
-            day_slice = tmp_day_slice.drop("TFLAG")
-        except:
-            # doesn't matter - ignore
-            day_slice = tmp_day_slice
 
-        var_str = ', '.join(variables)
-        sql_str = 'INSERT INTO ' + table_name + ' (col, row, utc_date_time, ' + var_str + \
-                  ') VALUES (%s, %s, %s, '
+    s_buf = io.StringIO()
 
-        for i in range(len(variables) - 1):
-            sql_str += '%s, '
-        sql_str += '%s)'
+    tmp_col_slice = ds.isel(COL=col, LAY=0)
+    try:
+        col_slice = tmp_col_slice.drop("TFLAG")
+    except:
+        # doesn't matter - ignore
+        col_slice = tmp_col_slice
 
-        # Go through each hour in this day slice to insert a row in the DB
-        for i in range(tstep_len):
-            hour_slice = day_slice.isel(TSTEP=i)
+    # makr rows start at 1 instead of 0
+    col_slice.coords['ROW'] += 1
 
-            # convert numpy date type to python native
-            ns = 1e-9  # number of seconds in a nanosecond
-            dts = datetime.datetime.utcfromtimestamp(dates[i].data.astype(int) * ns)
+    # convert xarray Dataset to Pandas Datatframe
+    # so we can use Dataframe to_csv() method
+    # and write csv file to a streaming io buffer
+    pd_df = col_slice.to_dataframe()
+    pd_df.to_csv(s_buf)
+    s_buf.seek(0)
+    new_csv, hdr = fix_csv(s_buf, col+1)
+    hdr_str = ','.join(hdr)
 
-            sql_values = [np.asscalar(col) + 1, np.asscalar(row) + 1, dts]
-            for var in variables:
-                var_value = hour_slice.data_vars[var].values.item(0)
-                sql_values.append(var_value)
+    sql_copy_statement = "COPY {table} ({header}) FROM STDIN WITH CSV HEADER;".format(table = table_name, header=hdr_str)
 
-            with conn:
-                with conn.cursor() as curs:
-                    curs.execute(sql_str, sql_values)
-                    db.commit()
+    cur = conn.cursor()
+    cur.copy_expert(sql_copy_statement, new_csv)
+    db.commit()
 
-db.close()
+    bulk_row_count = (len(rows) * 24)
+    processed_rows = bulk_row_count * (col+1)
+    print("Saved " + str(processed_rows) + " of " + str(total_rows) + " rows.")
+
+    s_buf.close()
+    new_csv.close()
+
 print("Done!", end='\n', flush=True)

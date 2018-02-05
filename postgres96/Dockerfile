@@ -1,4 +1,5 @@
 FROM centos:7
+#FROM centos:6
 MAINTAINER Michael J. Stealey <michael.j.stealey@gmail.com>
 
 ENV LANGUAGE="en_US.UTF-8"
@@ -15,6 +16,9 @@ RUN yum install -y \
   postgresql96-libs \
   postgresql96-contrib \
   postgresql96-devel \
+# armadillo may be causing issues for centos7
+#  armadillo-devel \
+#  armadillo \
   postgis23_96 \
   postgis23_96-client \
   ogr_fdw96
