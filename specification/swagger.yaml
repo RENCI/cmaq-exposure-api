@@ -99,6 +99,7 @@ paths:
         - $ref: '#/parameters/resolution'
         - $ref: '#/parameters/aggregation'
         - $ref: '#/parameters/utc_offset'
+        - $ref: '#/parameters/include_quality_metrics'
       responses:
         '200':
           description: OK
@@ -212,3 +213,10 @@ parameters:
     required: false
     type: string
     default: utc
+  include_quality_metrics:
+    name: include_quality_metrics
+    in: query
+    description: 'if set to true, quality metrics, if available, will be returned with the selected variables - default is false'
+    required: false
+    type: boolean
+    default: false

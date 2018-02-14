@@ -28,7 +28,7 @@ paths:
       - name: "search"
         in: "query"
         description: "search for exposure variable like - default is empty"
-        required: false  
+        required: false
         type: "string"
       responses:
         200:
@@ -90,6 +90,13 @@ paths:
         required: false
         type: "string"
         default: "utc"
+      - name: "include_quality_metrics"
+        in: "query"
+        description: "if set to true, quality metrics, if available, will be returned\
+          \ with the selected variables - default is false"
+        required: false
+        type: "boolean"
+        default: false
       responses:
         200:
           description: "OK"
@@ -344,3 +351,11 @@ parameters:
     required: false
     type: "string"
     default: "utc"
+  include_quality_metrics:
+    name: "include_quality_metrics"
+    in: "query"
+    description: "if set to true, quality metrics, if available, will be returned\
+      \ with the selected variables - default is false"
+    required: false
+    type: "boolean"
+    default: false

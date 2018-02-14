@@ -43,7 +43,7 @@ def variables_get(search=None) -> str:
     return data
 
 
-def values_get(variable, start_date, end_date, lat_lon, resolution=None, aggregation=None, utc_offset=None) -> str:
+def values_get(variable, start_date, end_date, lat_lon, resolution=None, aggregation=None, utc_offset=None, include_quality_metrics=None) -> str:
     session = Session()
     variable = "".join(variable.split()).lower()
     lat_lon = "".join(lat_lon.split())

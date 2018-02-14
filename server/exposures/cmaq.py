@@ -157,14 +157,17 @@ class CmaqExposures(object):
                         exposure += '_' + kwargs.get('aggregation') + '_14day'
                     session = Session()
 
-                    has_quality_metric = session.query(ExposureList.has_quality_metric).filter(
-                        ExposureList.variable == var).scalar()
-                    if has_quality_metric:
-                        dq_vars = [r.variable for r in session.query(QualityMetricsList.variable). \
-                            filter(getattr(QualityMetricsList, var) == 't').all()]
-                        ret_vars = []
-                        for r in dq_vars:
-                            ret_vars.append(var + '_' + r)
+                    if kwargs.get('include_quality_metrics') == True:
+                        has_quality_metric = session.query(ExposureList.has_quality_metric).filter(
+                            ExposureList.variable == var).scalar()
+                        if has_quality_metric:
+                            dq_vars = [r.variable for r in session.query(QualityMetricsList.variable). \
+                                filter(getattr(QualityMetricsList, var) == 't').all()]
+                            ret_vars = []
+                            for r in dq_vars:
+                                ret_vars.append(var + '_' + r)
+                    else:
+                        has_quality_metric = False
 
                     if kwargs.get('resolution') == 'hour':
                         # hourly resolution of data - return all hours for date range
