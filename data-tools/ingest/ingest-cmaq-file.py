@@ -170,8 +170,8 @@ dates = ds.coords['TSTEP']
 
 # now go through dataset and get slice for each column
 # to save in DB in bulk
-total_rows = len(cols) * len(rows) * 24
-print("Found " + str(total_rows) + " rows of data to copy into " + table_name + " db table", end='\n', flush=True);
+total_rows = len(cols) * len(rows) * len(dates)
+print("Found " + str(total_rows) + " rows of data to copy into " + table_name + " db table", end='\n', flush=True)
 
 for col in cols.data:
 
@@ -184,7 +184,7 @@ for col in cols.data:
         # doesn't matter - ignore
         col_slice = tmp_col_slice
 
-    # makr rows start at 1 instead of 0
+    # make rows start at 1 instead of 0
     col_slice.coords['ROW'] += 1
 
     # convert xarray Dataset to Pandas Datatframe
@@ -202,9 +202,9 @@ for col in cols.data:
     cur.copy_expert(sql_copy_statement, new_csv)
     db.commit()
 
-    bulk_row_count = (len(rows) * 24)
+    bulk_row_count = (len(rows) * len(dates))
     processed_rows = bulk_row_count * (col+1)
-    print("Saved " + str(processed_rows) + " of " + str(total_rows) + " rows.")
+    print("Saved " + str(processed_rows) + " of " + str(total_rows) + " rows.", end='\n', flush=True)
 
     s_buf.close()
     new_csv.close()
