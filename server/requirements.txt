@@ -6,7 +6,7 @@ clickclick==1.2.2
 configparser==3.5.0
 connexion==1.1.15
 Flask>=1.0.0
-Flask-Cors==3.0.3
+Flask-Cors==3.0.9
 GeoAlchemy2==0.4.0
 gevent==1.2.2
 gevent-websocket==0.10.1
